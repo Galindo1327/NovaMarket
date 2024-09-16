@@ -1,0 +1,7 @@
+{
+  "name": "NovaMarket",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite"
+}
