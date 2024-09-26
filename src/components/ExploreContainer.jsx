@@ -1,13 +1,10 @@
 import React from 'react';
-import './ExploreContainer.css';
-
-interface ContainerProps { }
 
 const ExploreContainer = () => {
   return (
     <div id="container">
       <strong>hola mundo</strong>
-      <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+      <p className='text-3xl m-20 text-red-500'>Esto es una prueba de TailwindCSS / <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
     </div>
   );
 };
