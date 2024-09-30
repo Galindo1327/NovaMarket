@@ -7,7 +7,7 @@ const Home = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonTitle>Blank</IonTitle>
+          <IonTitle>NovaMarket</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
