@@ -3,6 +3,7 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import Register from './pages/Register';
+import Login from './pages/Login';
 import { AuthProvider } from './context/authContext'; // No le hagan caso a este error XD
 
 /* Core CSS required for Ionic components to work properly */
@@ -47,8 +48,11 @@ const App = () => (
           <Route exact path="/register">
             <Register />
           </Route>
+          <Route exact path="/login">
+            <Login />
+          </Route>
           <Route exact path="/">
-            <Redirect to="/home" />
+            <Redirect to="/login" />
           </Route>
         </IonRouterOutlet>
       </IonReactRouter>

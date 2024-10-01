@@ -1,56 +1,55 @@
 import React, { useState } from 'react'
 import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonInput } from '@ionic/react'
 import { Card, TextField } from '@mui/material'
-import { useAuth } from '../context/authContext'    // No le hagan caso a este error XD
+import { useAuth } from '../context/authContext'
 import { useHistory } from 'react-router-dom';
 
-function Register() {
+function Login() {
     const auth = useAuth();
-
-    const [emailRegister, setEmailRegister] = useState("");
-    const [passwordRegister, setPasswordRegister] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false)
-    console.log("State Form:", emailRegister, passwordRegister);
+    console.log("State Form:", email, password);
 
     const history = useHistory();
 
-    const handleRegister = (e) => {
+    const handleLogin = (e) => {
         e.preventDefault();
         const emailPattern = /^[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}$/;
-        if (!emailPattern.test(emailRegister)) {
+        if (!emailPattern.test(email)) {
             setEmailError(true);
             return;
         }
         setEmailError(false);
 
         const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/
-        if (!passwordPattern.test(passwordRegister)) {
+        if (!passwordPattern.test(password)) {
             setPasswordError(true);
             return;
         }
         setPasswordError(false);
-        auth.register(emailRegister, passwordRegister);
+        auth.login(email, password);
 
-        history.push('/login');
+        history.push('/home');
     };
+
 
     return (
         <div className="w-screen h-screen flex justify-center bg-sky-800 items-center">
             <IonCard color="dark" className='w-96 max-w-sm mx-min'>
                 <IonCardHeader className='text-center text-black'>
                     <IonCardTitle>NovaMarket</IonCardTitle>
-                    <IonCardSubtitle>Register</IonCardSubtitle>
+                    <IonCardSubtitle>Log In</IonCardSubtitle>
                     <br />
                     <div className='flex flex-col gap-4'>
-                        <TextField id="outlined-basic" label="Nombre" variant="outlined" />
                         <TextField 
                             id="outlined-basic" 
                             label="Correo" 
                             variant="outlined" 
                             error = {emailError}
                             helperText={emailError ? "Los correos electronicos deben de tener un '@' y '.com'" : ""}
-                            onChange={(e) => setEmailRegister(e.target.value)}
+                            onChange={(e) => setEmail(e.target.value)}
                             type="email"
                         />
                         <TextField 
@@ -59,13 +58,17 @@ function Register() {
                             variant="outlined"
                             error = {passwordError}
                             helperText={passwordError ? "Las contraseñas deben de tener como minimo una minuscula, una mayuscula, un digito y una longitud de 6 caracteres" : ""}
-                            onChange={(e) => setPasswordRegister(e.target.value)}
+                            onChange={(e) => setPassword(e.target.value)}
                             type="password"
                         />
+                        <a
+                            href="/register"
+                            className='text-white bg-gradient-to-br from-purple-600 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2'
+                        >¿No tienes cuenta?</a>
                         <button 
                             className='text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2' 
-                            onClick={(e) => handleRegister(e)}
-                        >Registrarse</button>
+                            onClick={(e) => handleLogin(e)}
+                        >Log In</button>
                     </div>
                 </IonCardHeader>
             </IonCard>
@@ -73,4 +76,4 @@ function Register() {
     )
 }
 
-export default Register
+export default Login
