@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonInput } from '@ionic/react'
 import { Card, TextField } from '@mui/material'
 import { useAuth } from '../context/authContext'    // No le hagan caso a este error XD
+import { useHistory } from 'react-router-dom';
 
 function Register() {
     const auth = useAuth();
@@ -11,6 +12,8 @@ function Register() {
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false)
     console.log("State Form:", emailRegister, passwordRegister);
+
+    const history = useHistory();
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -28,6 +31,8 @@ function Register() {
         }
         setPasswordError(false);
         auth.register(emailRegister, passwordRegister);
+
+        history.push('/login');
     };
 
     return (
