@@ -4,6 +4,8 @@ import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import Register from './pages/Register';
 import Login from './pages/Login';
+import Feed from './components/Feed';
+import DetalleProducto from './components/DetalleProducto';
 import { AuthProvider } from './context/authContext'; // No le hagan caso a este error XD
 
 /* Core CSS required for Ionic components to work properly */
@@ -54,6 +56,9 @@ const App = () => (
           <Route exact path="/">
             <Redirect to="/login" />
           </Route>
+          <Route path="/feed" component={Feed} exact={true} />
+          <Route path="/producto" component={DetalleProducto} exact={true} />
+          {/* <Route path="/chat" component={Chat}  exact={true}/> */}
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
