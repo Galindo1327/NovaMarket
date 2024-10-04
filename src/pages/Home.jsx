@@ -11,7 +11,7 @@ const Home = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
+        <IonHeader collapse="condense"> 
           <IonToolbar>
             <IonTitle size="large">Blank</IonTitle>
           </IonToolbar>

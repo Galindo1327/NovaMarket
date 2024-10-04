@@ -58,7 +58,7 @@ const App = () => (
           </Route>
           <Route path="/feed" component={Feed} exact={true} />
           <Route path="/producto" component={DetalleProducto} exact={true} />
-          {/* <Route path="/chat" component={Chat}  exact={true}/> */}
+          {/* <Route path="/chat" component={Chat}  exact={true}/> */} 
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

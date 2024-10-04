@@ -23,7 +23,7 @@ const DetalleProducto = () => {
             <IonCardSubtitle>{producto.precio}</IonCardSubtitle>
           </IonCardHeader>
           <IonCardContent>
-            <p>Detalles del producto...</p>
+            <p>Detalles del producto...</p> 
             
           </IonCardContent>
           <IonButton onClick={() => history.goBack()}>Regresar</IonButton>

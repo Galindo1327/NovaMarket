@@ -23,7 +23,7 @@ const Chat = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar>
-          <IonCardTitle>Chat con el Vendedor</IonCardTitle>
+          <IonCardTitle>Chat con el Vendedor</IonCardTitle> 
         </IonToolbar>
       </IonHeader>
       <IonContent>

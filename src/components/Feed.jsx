@@ -44,7 +44,7 @@ const Feed = () => {
 
       {/* Contenido del Feed */}
       <IonContent className="ion-padding" style={{ backgroundColor: '#ffffff' }}>
-        {/* Barra de búsqueda */}
+        {/* Barra de búsqueda */} 
         <div className="flex justify-center items-center mb-4">
           <IonInput placeholder="Search here" style={{ width: '60%', borderRadius: '20px', backgroundColor: 'white', border: '1px solid #ccc', padding: '8px 16px', color: 'black' }}></IonInput>
           <IonButton shape="round" color="light" className='ml-2'>
