@@ -5,11 +5,6 @@ import Feed from '../components/Feed';
 const Home = () => {
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>NovaMarket</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense"> 
           <IonToolbar>

@@ -1,20 +1,206 @@
-#container {
+/* Estilos para la cabecera */
+.header-toolbar {
+  height: 120px; /* Aumentar tamaño del contenedor */
+  background-color: var(--header-bg-color, #0a4585); /* Color de fondo configurable */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative; /* Para colocar el logo de forma absoluta */
+  padding: 10;
+  
+}
+
+.header-title {
+  color: rgb(255, 255, 255);
+  background-color: #110df0;
+  font-size: 5rem;
+  font-weight: bold;
+  text-align: center;
+  flex-grow: 1;
+}
+
+.header-logo {
+  width: 100px;
   height: 100px;
-  background: blue;
+  position: absolute;
+  right: 80px;
+  top: 50%;
+  transform: translateY(-50%); /* Para centrar verticalmente el logo */
+  margin: o;
+  padding:0px;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+
+/* Barra de búsqueda */
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #110df0;
+  margin-bottom: 20px;
+  margin-top: 0;
+  padding: 10px;
 }
 
-#container p {
-  font-size: 16px; 
-  line-height: 22px;
-  color: #8c8c8c;
-  margin: 0;
+.search-input {
+  width: 70%;
+  border-radius: 20px;
+  background-color: white;
+  border: 2px solid #ccc;
+  padding: 8px 6px;
+  padding-left: 10px;
+  color: black;
 }
 
-#container a {
-  text-decoration: none;
+
+/* Estilos para el grid de productos */
+.products-grid {
+  display: flex; /* Habilitar flexbox */
+  flex-wrap: wrap; /* Permitir que las tarjetas se envuelvan */
+  justify-content: center; /* Centrarlas horizontalmente */
+  padding: 0 8px; /* Espaciado lateral */
 }
+
+.product-card {
+  width: 85%; /* Dos columnas con espacio entre ellas */
+  text-align: center;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  border: 2px solid #3b82f6; /* Recuadro azul */
+  margin: 20px; /* Margen para crear espacio alrededor de cada tarjeta */
+  box-sizing: border-box; /* Incluye borde y padding en el ancho */
+}
+
+.product-image {
+  width: 130px;
+  height: 130px;
+  margin: auto;
+  margin-top: 10px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.product-title {
+  font-size: 1.6em;
+  font-weight: bold;
+  color: #333333;
+}
+
+.product-price {
+  font-size: 1.2em;
+  color: #ff4500;
+}
+
+/* General */
+.ion-padding {
+  padding: 16px;
+  background-color: #f4f4f9;
+}
+
+
+
+
+
+
+
+
+/*
+  Código CSS comentado para revisión
+
+    
+  .custom-toolbar {
+    --background: #3b82f6;
+    --color: white;
+  }
+
+  .header-logo {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-radius: 50%;
+  }
+
+ 
+  .search-container {
+    padding: 16px;
+  }
+
+  .search-box {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+
+  .custom-input {
+    --background: white;
+    --color: black;
+    --placeholder-color: #666;
+    --padding-start: 16px;
+    flex: 1;
+  }
+
+  .search-button,
+  .filter-button {
+    --background: transparent;
+    --color: #3b82f6;
+    --box-shadow: none;
+    margin: 0;
+  }
+
+ 
+  .products-grid {
+    padding: 0 8px;
+  }
+
+  .product-card {
+    margin: 8px 4px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+
+  .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+    padding: 16px;
+  }
+
+  .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  .product-card ion-card-header {
+    padding: 12px;
+  }
+
+  .product-card ion-card-title {
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .product-card ion-card-subtitle {
+    font-size: 12px;
+    color: #3b82f6;
+  }
+
+
+  .feed-content {
+    --background: #f4f4f4;
+  }
+
+
+  ion-content {
+    --padding-top: 0;
+  }
+*/

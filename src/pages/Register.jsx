@@ -3,6 +3,7 @@ import { IonCard, IonCardHeader, IonCardTitle, IonCardSubtitle, IonInput } from 
 import { Card, TextField } from '@mui/material'
 import { useAuth } from '../context/authContext'    // No le hagan caso a este error XD
 import { useHistory } from 'react-router-dom';
+import logo from '../assets/logoNova.png';
 
 function Register() {
     const auth = useAuth();
@@ -36,34 +37,54 @@ function Register() {
     };
 
     return (
-        <div className="w-screen h-screen flex justify-center bg-sky-800 items-center">
-            <IonCard color="dark" className='w-96 max-w-sm mx-min'>
+        <div className="w-screen h-screen flex justify-center bg-[#ffffff] items-center">
+            <IonCard className='w-96 max-w-sm mx-min p-8 bg-[#e5fff9]'>
                 <IonCardHeader className='text-center text-black'>
+                    <div className="flex justify-center mb-4">
+                        <img
+                            src={logo}
+                            alt="NovaMarket Logo"
+                            className="w-40 h-33"
+                        />
+                    </div>
                     <IonCardTitle>NovaMarket</IonCardTitle>
                     <IonCardSubtitle>Register</IonCardSubtitle>
                     <br />
                     <div className='flex flex-col gap-4'>
-                        <TextField id="outlined-basic" label="Nombre" variant="outlined" />
+                        <TextField 
+                        id="outlined-basic" 
+                        label="Ingresa Nombre" 
+                        variant="outlined" 
+                        InputProps={{
+                            style: { backgroundColor: 'white' } // Fondo blanco para los campos de texto
+                        }}
+                        />
                         <TextField 
                             id="outlined-basic" 
-                            label="Correo" 
+                            label="Ingresa Correo electronico" 
                             variant="outlined" 
                             error = {emailError}
                             helperText={emailError ? "Los correos electronicos deben de tener un '@' y '.com'" : ""}
                             onChange={(e) => setEmailRegister(e.target.value)}
                             type="email"
+                            InputProps={{
+                                style: { backgroundColor: 'white' } // Fondo blanco para los campos de texto
+                            }}
                         />
                         <TextField 
                             id="outlined-basic" 
-                            label="Contraseña" 
+                            label="Ingresa Contraseña" 
                             variant="outlined"
                             error = {passwordError}
                             helperText={passwordError ? "Las contraseñas deben de tener como minimo una minuscula, una mayuscula, un digito y una longitud de 6 caracteres" : ""}
                             onChange={(e) => setPasswordRegister(e.target.value)}
                             type="password"
+                            InputProps={{
+                                style: { backgroundColor: 'white' } // Fondo blanco para los campos de texto
+                            }}
                         />
                         <button 
-                            className='text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2' 
+                            className='text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2' 
                             onClick={(e) => handleRegister(e)}
                         >Registrarse</button>
                     </div>
