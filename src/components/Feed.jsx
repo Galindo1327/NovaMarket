@@ -1,6 +1,6 @@
-import React from 'react';
-import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonPage, IonCardContent, IonInput, IonButton, IonGrid, IonRow, IonCol, IonIcon, IonHeader, IonToolbar, IonTitle } from '@ionic/react';
-import { searchOutline, funnelOutline } from 'ionicons/icons';
+import React, { useState } from 'react';
+import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonIcon, IonHeader, IonToolbar, IonTitle, IonPopover, IonList, IonItem, IonChip, IonLabel } from '@ionic/react';
+import { searchOutline, funnelOutline, closeCircleOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import carro from '../assets/carro.jpg';
 import estufa from '../assets/estufa.avif';
@@ -8,28 +8,37 @@ import mt09 from '../assets/mt09.jpg';
 import xtz from '../assets/xtz.jpg';
 import ramen from '../assets/ramen.avif';
 import bike from '../assets/bike.avif';
+
 const Feed = () => {
   // Definimos los productos a mostrar
   const history = useHistory();
   const productos = [
-    { id: 1, nombre: 'CARRO', precio: '$23.000.000', img: carro },
-    { id: 2, nombre: 'ESTUFA', precio: '$270.000', img: estufa },
-    { id: 3, nombre: 'MT-09', precio: '$25.000.000', img: mt09 },
-    { id: 4, nombre: 'Chicken Ramen', precio: '$20.950', img: ramen },
-    { id: 5, nombre: 'XTZ 250', precio: '$17.750.000', img: xtz },
-    { id: 6, nombre: 'CICLA CAMBIOS', precio: '$225.000', img: bike },
-    { id: 7, nombre: 'CARRO', precio: '$23.000.000', img: carro },
-    { id: 8, nombre: 'ESTUFA', precio: '$270.000', img: estufa },
-    { id: 9, nombre: 'MT-09', precio: '$25.000.000', img: mt09 },
-    { id: 10, nombre: 'Chicken Ramen', precio: '$20.950', img: ramen },
-    { id: 11, nombre: 'XTZ 250', precio: '$17.750.000', img: xtz },
-    { id: 12, nombre: 'CICLA CAMBIOS', precio: '$225.000', img: bike }
+    { id: 1, nombre: 'CARRO', precio: '$23.000.000', tipo: 'vehículo', img: carro },
+    { id: 2, nombre: 'ESTUFA', precio: '$270.000', tipo: 'electrodoméstico', img: estufa },
+    { id: 3, nombre: 'MT-09', precio: '$25.000.000', tipo: 'vehículo', img: mt09 },
+    { id: 4, nombre: 'Chicken Ramen', precio: '$20.950', tipo: 'comida', img: ramen },
+    { id: 5, nombre: 'XTZ 250', precio: '$17.750.000', tipo: 'vehículo', img: xtz },
+    { id: 6, nombre: 'CICLA CAMBIOS', precio: '$225.000', tipo: 'vehículo', img: bike },
   ];
+
+  // Estado para el texto de búsqueda
+  const [searchText, setSearchText] = useState('');
+  
+  // Estado para el filtro
+  const [filtro, setFiltro] = useState('');
+  
+  // Estado para manejar el popover de filtros
+  const [showPopover, setShowPopover] = useState(false);
+
+  // Filtrar productos según el texto de búsqueda y el filtro
+  const productosFiltrados = productos.filter(producto =>
+    producto.nombre.toLowerCase().includes(searchText.toLowerCase()) &&
+    (filtro === '' || producto.tipo === filtro)
+  );
 
   const handleProductClick = (producto) => {
     history.push('/producto', { producto });
   };
-
 
   return (
     <IonPage>
@@ -44,32 +53,68 @@ const Feed = () => {
 
       {/* Contenido del Feed */}
       <IonContent className="ion-padding" style={{ backgroundColor: '#ffffff' }}>
-        {/* Barra de búsqueda */} 
+
+        {/* Barra de búsqueda */}
         <div className="flex justify-center items-center mb-4">
-          <IonInput placeholder="Search here" style={{ width: '60%', borderRadius: '20px', backgroundColor: 'white', border: '1px solid #ccc', padding: '8px 16px', color: 'black' }}></IonInput>
-          <IonButton shape="round" color="light" className='ml-2'>
+          <IonInput 
+            placeholder="Busca tu producto" 
+            style={{ width: '60%', borderRadius: '20px', backgroundColor: 'white', border: '0.5px solid #ccc', 
+              marginTop: "10px", color: 'black',
+              textIndent: '15px' }} 
+            value={searchText}
+            onIonInput={(e) => setSearchText(e.target.value)} // Actualiza el texto de búsqueda
+          />
+          <IonButton shape="round" color="light" className='ml-2' style={{marginTop: "10px"}}>
             <IonIcon icon={searchOutline} />
           </IonButton>
-          <IonButton shape="round" color="light" className='ml-2'>
+
+          {/* Botón para mostrar el popover de filtros */}
+          <IonButton shape="round" color="light" className='ml-2' style={{marginTop: "10px"}} onClick={() => setShowPopover(true)}>
             <IonIcon icon={funnelOutline} />
           </IonButton>
+
+          {/* Popover con las opciones de filtrado */}
+          <IonPopover
+            isOpen={showPopover}
+            onDidDismiss={() => setShowPopover(false)}
+          >
+            <IonList>
+              <IonItem button onClick={() => { setFiltro(''); setShowPopover(false); }}>Todos</IonItem>
+              <IonItem button onClick={() => { setFiltro('vehículo'); setShowPopover(false); }}>Vehículos</IonItem>
+              <IonItem button onClick={() => { setFiltro('electrodoméstico'); setShowPopover(false); }}>Electrodomésticos</IonItem>
+              <IonItem button onClick={() => { setFiltro('comida'); setShowPopover(false); }}>Comida</IonItem>
+            </IonList>
+          </IonPopover>
         </div>
 
+        {/* Mostrar el filtro activo */}
+        {filtro && (
+          <div className="flex items-center mb-4">
+            <IonChip color="primary">
+              <IonLabel>{filtro.charAt(0).toUpperCase() + filtro.slice(1)}</IonLabel>
+              <IonIcon icon={closeCircleOutline} onClick={() => setFiltro('')} />
+            </IonChip>
+          </div>
+        )}
+      
         {/* Grid de productos */}
         <IonGrid>
           <IonRow>
-            {productos.map((producto) => (
-              <IonCol size="6" key={producto.id} className="ion-align-self-center">
-               <IonCard onClick={() => handleProductClick(producto)}>
-                  <img src={producto.img} alt={producto.nombre} style={{ width: '100px', height: '100px', margin: 'auto' }} />
-                  <IonCardHeader>
-                    <IonCardTitle style={{ fontSize: '1em' }}>{producto.nombre}</IonCardTitle>
-                    <IonCardSubtitle style={{ fontSize: '0.9em' }}>{producto.precio}</IonCardSubtitle>
-                    
-                  </IonCardHeader>
-                </IonCard>
-              </IonCol>
-            ))}
+            {productosFiltrados.length > 0 ? (
+              productosFiltrados.map((producto) => (
+                <IonCol size="6" key={producto.id} className="ion-align-self-center">
+                  <IonCard onClick={() => handleProductClick(producto)}>
+                    <img src={producto.img} alt={producto.nombre} style={{ width: '100px', height: '100px', margin: 'auto',   }} />
+                    <IonCardHeader>
+                      <IonCardTitle style={{ fontSize: '1em' }}>{producto.nombre}</IonCardTitle>
+                      <IonCardSubtitle style={{ fontSize: '0.9em' }}>{producto.precio}</IonCardSubtitle>
+                    </IonCardHeader>
+                  </IonCard>
+                </IonCol>
+              ))
+            ) : (
+              <p>No se encontraron productos</p> // Mensaje cuando no se encuentra nada
+            )}
           </IonRow>
         </IonGrid>
       </IonContent>
