@@ -3,8 +3,11 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/rea
 import Feed from '../components/Feed';
 
 const Home = () => {
+/*Retire la parte que indicaba como titulo NovaMarket, ya que hacia conflicto con el feed
+se mostraba por encima de el*/ 
+
   return (
-    <IonPage>
+    <IonPage> 
       <IonContent fullscreen>
         <IonHeader collapse="condense"> 
           <IonToolbar>

@@ -41,7 +41,7 @@ function Register() {
             <IonCard className='w-96 max-w-sm mx-min p-8 bg-[#e5fff9]'>
                 <IonCardHeader className='text-center text-black'>
                     <div className="flex justify-center mb-4">
-                        <img
+                        <img    //Logo importado
                             src={logo}
                             alt="NovaMarket Logo"
                             className="w-40 h-33"

@@ -41,7 +41,7 @@
   margin-top: 0;
   padding: 10px;
 }
-
+/*cuadro de busqueda*/
 .search-input {
   width: 70%;
   border-radius: 20px;
@@ -56,9 +56,9 @@
 /* Estilos para el grid de productos */
 .products-grid {
   display: flex; /* Habilitar flexbox */
-  flex-wrap: wrap; /* Permitir que las tarjetas se envuelvan */
+  flex-wrap: wrap; /* Permitir que las tarjetas sean mas faciles de ubicar */
   justify-content: center; /* Centrarlas horizontalmente */
-  padding: 0 8px; /* Espaciado lateral */
+  padding: 0 8px; 
 }
 
 .product-card {
