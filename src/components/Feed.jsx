@@ -21,7 +21,6 @@ import sony from '../assets/Sony.jpg';
 import nikon from '../assets/Nikon.jpg';
 import s24 from '../assets/Samsung.png';
 import logo from '../assets/logoNova.png';
-import './Feed.css';
 
 const Feed = () => {
   const history = useHistory();
@@ -54,35 +53,47 @@ const Feed = () => {
     <IonPage>
       {/* Barra de navegación */}
       <IonHeader>
-        <IonToolbar className="header-toolbar">
-          <IonTitle className="header-title">NovaMarket</IonTitle>
-          <img src={logo} alt="Logo" className="header-logo" />
+        <IonToolbar className=" h-20 flex items-center ">
+          <div className="flex bg-blue-800 items-center">
+            <IonTitle className="text-white text-4xl font-bold text-center ">NovaMarket</IonTitle>
+            <img src={logo} alt="Logo" className="w-36 h-22 px-8" />
+          </div>
         </IonToolbar>
       </IonHeader>
 
       {/* Contenido del Feed */}
-      <IonContent className="ion-padding" style={{ backgroundColor: '#f4f4f9' }}>
+      <IonContent className="bg-gray-100">
         {/* Barra de búsqueda */}
-        <div className="search-bar">
-          <IonInput placeholder="      Search here" className="search-input"></IonInput>
-          <IonButton shape="round" color="light">
+        <div className="bg-blue-800 flex justify-center items-center p-4" >
+          <IonInput
+            placeholder="     Buscar aquí"
+            className="text-white font-bold w-3/4 m-5 rounded-full border-4 border-gray-300 p-4"
+          ></IonInput>
+          <IonButton className="rounded-full mx-2 bg-white text-white">
             <IonIcon icon={searchOutline} />
           </IonButton>
-          <IonButton shape="round" color="light">
+          <IonButton className="rounded-full bg-white text-white">
             <IonIcon icon={funnelOutline} />
           </IonButton>
         </div>
 
         {/* Grid de productos */}
         <IonGrid>
-          <IonRow>
+          <IonRow className="flex flex-wrap">
             {productos.map((producto) => (
-              <IonCol size="6" key={producto.id} className="ion-align-self-center">
-                <IonCard onClick={() => handleProductClick(producto)} className="product-card">
-                  <img src={producto.img} alt={producto.nombre} className="product-image" />
+              <IonCol size="6" key={producto.id} className="p-2 flex justify-center">
+                <IonCard
+                  onClick={() => handleProductClick(producto)}
+                  className="w-full max-w-xs bg-white rounded-lg shadow-lg"
+                >
+                  <img
+                    src={producto.img}
+                    alt={producto.nombre}
+                    className="w-full h-40 object-contain p-4"
+                  />
                   <IonCardHeader>
-                    <IonCardTitle className="product-title">{producto.nombre}</IonCardTitle>
-                    <IonCardSubtitle className="product-price">{producto.precio}</IonCardSubtitle>
+                    <IonCardTitle className="text-xl font-bold text-gray-800">{producto.nombre}</IonCardTitle>
+                    <IonCardSubtitle className="text-lg text-red-500">{producto.precio}</IonCardSubtitle>
                   </IonCardHeader>
                 </IonCard>
               </IonCol>

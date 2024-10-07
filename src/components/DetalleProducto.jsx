@@ -5,12 +5,10 @@ import {
 } from '@ionic/react';
 import { useHistory, useLocation } from 'react-router-dom';
 import logo from '../assets/logoNova.png'; 
-import './DetalleProducto.css';
 
 const DetalleProducto = () => {
   const location = useLocation();
   const history = useHistory();
-   // Asumiendo que la información del producto se pasa a través del estado de la navegación
   const { producto } = location.state || { producto: {} };
 
   if (!producto) {
@@ -19,45 +17,38 @@ const DetalleProducto = () => {
 
   return (
     <IonPage>
-      {/* Sección superior con fondo azul, logo y título */}
-      <div className="header-toolbar">
-        <h1 className="titulo-novamarket">NovaMarket</h1>
-        <br />
-        <div className="usuario-container"> 
-          <p className="nombre-usuario">Juan Carlos</p>
+      <div className="bg-blue-800 py-5 text-center text-white relative">
+        <h1 className="text-4xl font-bold mb-2">NovaMarket</h1>
+        <div className="mt-2">
+          <p className="text-2xl">Juan Carlos</p>
         </div>
         
-        <img src={logo} alt="Logo" className="logo-novamarket" />
+        <img src={logo} alt="Logo" className="absolute right-5 top-5 w-24" />
       </div>
 
-
-      <IonContent className="ion-padding">
-        <IonCard className="product-card">
-          {/* Imagen del producto */}
+      <IonContent className="p-4">
+        <IonCard className="text-center border-2 border-blue-400 rounded-lg">
           <img
             src={producto.img}
             alt={producto.nombre}
-            className="product-image"
+            className="w-full h-80 object-contain border-b-2 border-blue-400"
           />
           
-          {/* Información del producto */}
           <IonCardHeader>
-            <IonCardTitle className="product-title">{producto.nombre}</IonCardTitle>
-            <IonCardSubtitle className="product-price">{producto.precio}</IonCardSubtitle>
+            <IonCardTitle className="text-2xl text-gray-800 font-bold">{producto.nombre}</IonCardTitle>
+            <IonCardSubtitle className="text-xl text-orange-500 mt-1">{producto.precio}</IonCardSubtitle>
           </IonCardHeader>
 
           <IonCardContent>
-            {/* Cuadro de descripción */}
-            <IonLabel className="description-label">Descripción:</IonLabel>
-            <div className="description-placeholder">
+            <IonLabel className="block mb-2 text-gray-600">Descripción:</IonLabel>
+            <div className="border border-gray-300 p-2 rounded bg-gray-100 text-gray-700 mb-5">
               {producto.descripcion || "Este es un placeholder para la descripción del producto."}
             </div>
           </IonCardContent>
 
-          {/* Botones Regresar y Chatear */}
-          <div className="button-container">
-            <IonButton onClick={() => history.goBack()} className="btn-regresar">Regresar</IonButton>
-            <IonButton onClick={() => history.push('/chat')} className="btn-chatear">Chatear con el Vendedor</IonButton>
+          <div className="flex justify-around mb-5">
+            <IonButton onClick={() => history.goBack()} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Regresar</IonButton>
+            <IonButton onClick={() => history.push('/chat')} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Chatear con el Vendedor</IonButton>
           </div>
         </IonCard>
       </IonContent>
