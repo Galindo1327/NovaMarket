@@ -35,6 +35,10 @@ function Login() {
         history.push('/home');
     };
 
+    const handleRegisterRedirect = () => {
+        history.push('/register');
+    };
+
     return (
         <div className="w-screen h-screen flex justify-center bg-[#ffffff] items-center"> 
             <IonCard  className="w-96 max-w-sm mx-min p-8 bg-[#e5fff9]">
@@ -74,19 +78,18 @@ function Login() {
                             }}
                         />
 
-                        <div className="flex items-center justify-between">
-                            <div className="flex items-center">
-                                <input type="checkbox" className="mr-2" id="rememberMe" />
-                                <label htmlFor="rememberMe" className="text-gray-600">Remember me</label>
-                            </div>
-                            <a href="/reset-password" className="text-blue-600">Reset Password!</a>
-                        </div>
-
                         <button
                             className="text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mb-2"
                             onClick={(e) => handleLogin(e)}
                         >
                             LOGIN
+                        </button>
+                        {/* Botón para registrarse */}
+                        <button
+                            className="text-blue-600 font-medium text-sm px-5 py-2.5 text-center mb-2"
+                            onClick={(e) => handleRegisterRedirect(e)}
+                        >
+                            ¿No tienes cuenta? Regístrate
                         </button>
                     </div>
                 </IonCardHeader>
