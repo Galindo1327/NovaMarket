@@ -7,6 +7,8 @@ import Login from './pages/Login';
 import Feed from './components/Feed';
 import DetalleProducto from './components/DetalleProducto';
 import { AuthProvider } from './context/authContext'; // No le hagan caso a este error XD
+import AddProduct from './components/AñadirProducto';
+import ParentComponent from './components/ComponentePadre';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -59,6 +61,7 @@ const App = () => (
           <Route path="/feed" component={Feed} exact={true} />
           <Route path="/producto" component={DetalleProducto} exact={true} />
           {/* <Route path="/chat" component={Chat}  exact={true}/> */} 
+          <Route path="/agregar-producto" component={ParentComponent} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

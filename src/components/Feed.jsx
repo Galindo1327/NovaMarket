@@ -64,17 +64,33 @@ const Feed = () => {
     history.push('/producto', { producto });
   };
 
+
   return (
     <IonPage>
-      {/* Barra de navegación */}
-      <IonHeader>
-        <IonToolbar className=" h-20 flex items-center ">
-          <div className="flex bg-blue-800 items-center">
-            <IonTitle className="text-white text-4xl font-bold text-center ">NovaMarket</IonTitle>
-            <img src={logo} alt="Logo" className="w-36 h-22 px-8" />
-          </div>
-        </IonToolbar>
-      </IonHeader>
+    {/* Barra de navegación */}
+<IonHeader>
+  <IonToolbar className="h-20 flex items-center">
+    <div className="bg-blue-800 flex items-center w-full justify-between px-4">
+      <div className="flex items-center space-x-4">
+        <img src={logo} alt="Logo" className="w-20 h-20" />
+        <IonTitle className="text-white text-2xl font-bold">NovaMarket</IonTitle>
+      </div>
+      <IonButton
+        shape="round"
+        color="light"
+        className="ml-2 text-3xl"
+        onClick={() => history.push('/agregar-producto')}
+      >
+        +
+      </IonButton>
+    </div>
+  </IonToolbar>
+</IonHeader>
+
+
+
+
+
 
       {/* Contenido del Feed */}
       <IonContent className="ion-padding" style={{ backgroundColor: '#ffffff' }}>
