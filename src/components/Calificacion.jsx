@@ -12,6 +12,8 @@ const Calificacion = ({ productoId, isDetail = false }) => {
   const [averageRating, setAverageRating] = useState(0); // Promedio de calificación
   const [totalComments, setTotalComments] = useState(0); // Total de comentarios
   const [isLoading, setIsLoading] = useState(true); // Estado para cargar datos
+  const [areCommentsVisible, setAreCommentsVisible] = useState(false); // Control de visibilidad de comentarios
+  const [reviews, setReviews] = useState([]); // Almacenar los comentarios obtenidos
 
   // Obtener todas las calificaciones de un producto
   const fetchRatings = async () => {
@@ -21,16 +23,19 @@ const Calificacion = ({ productoId, isDetail = false }) => {
 
       let totalRatings = 0;
       let ratingSum = 0;
+      let fetchedReviews = [];
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         ratingSum += data.rating;
         totalRatings++;
+        fetchedReviews.push(data); // Agregar comentarios obtenidos
       });
 
       if (totalRatings > 0) {
         setAverageRating(ratingSum / totalRatings);
         setTotalComments(totalRatings);
+        setReviews(fetchedReviews); // Almacenar comentarios
       }
     } catch (e) {
       console.error('Error fetching ratings: ', e);
@@ -73,6 +78,11 @@ const Calificacion = ({ productoId, isDetail = false }) => {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  // Alternar visibilidad de comentarios
+  const toggleCommentsVisibility = () => {
+    setAreCommentsVisible(!areCommentsVisible);
   };
 
   // Si estamos en el feed, solo mostramos estrellas y total de comentarios
@@ -131,6 +141,36 @@ const Calificacion = ({ productoId, isDetail = false }) => {
       >
         {isSubmitting ? 'Enviando...' : 'Enviar Calificación'}
       </IonButton>
+
+      {/* Botón para mostrar/ocultar los comentarios */}
+      <IonButton
+        onClick={toggleCommentsVisibility}
+        expand="full"
+        className="mt-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+      >
+        {areCommentsVisible ? 'Ocultar comentarios' : `Mostrar comentarios (${totalComments})`}
+      </IonButton>
+
+      {/* Lista de comentarios desplegable */}
+      {areCommentsVisible && (
+        <div className="mt-4 space-y-4">
+          {reviews.map((review, index) => (
+            <div key={index} className="border-b pb-4">
+              <StarRatings
+                rating={review.rating}
+                starRatedColor="gold"
+                numberOfStars={5}
+                name={`rating-${index}`}
+                starDimension="20px"
+                starSpacing="3px"
+              />
+              <p className="mt-2 text-gray-700">
+                <strong>Comentario:</strong> {review.comment}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </IonCard>
   );
 };

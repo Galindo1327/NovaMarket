@@ -51,7 +51,7 @@ const DetalleProducto = () => {
     const stars = [];
     for (let i = 1; i <= 5; i++) {
       stars.push(
-        <span key={i} className={`text-2xl ${i <= averageRating ? 'text-yellow-500' : 'text-gray-300'}`}>
+        <span key={i} className={`text-3xl ${i <= averageRating ? 'text-yellow-500' : 'text-gray-300'}`}>
           ★
         </span>
       );
@@ -89,21 +89,11 @@ const DetalleProducto = () => {
             </div>
 
             <div className="mb-4">
-              <IonLabel className="block text-gray-700 font-bold">Promedio de Calificaciones:</IonLabel>
+              <IonLabel className="text-2xl block text-gray-700 font-bold">Promedio de Calificaciones:</IonLabel>
               <div className="flex justify-center mb-2">
                 {renderAverageStars()}
               </div>
-              <IonLabel className="block text-gray-700">Comentarios:</IonLabel>
-              {reviews.length > 0 ? (
-                reviews.map((review, index) => (
-                  <div key={index} className="mb-3">
-                    <p>Calificación: {review.rating} estrellas</p>
-                    <p>Comentario: {review.comment}</p>
-                  </div>
-                ))
-              ) : (
-                <p>No hay calificaciones para este producto aún.</p>
-              )}
+              
             </div>
           </IonCardContent>
 
