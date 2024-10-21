@@ -7,7 +7,7 @@ import Login from './pages/Login';
 import Feed from './components/Feed';
 import DetalleProducto from './components/DetalleProducto';
 import { AuthProvider } from './context/authContext'; // No le hagan caso a este error XD
-import AddProduct from './components/AñadirProducto';
+import AddProduct from './components/AddProduct';
 import ParentComponent from './components/ComponentePadre';
 
 /* Core CSS required for Ionic components to work properly */
