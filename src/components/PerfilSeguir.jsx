@@ -40,6 +40,6 @@ const Perfil = () => {
       </IonContent>
     </IonPage>
   );
-};
+}; 
 
 export default Perfil;
