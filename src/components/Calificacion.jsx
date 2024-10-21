@@ -113,34 +113,20 @@ const Calificacion = ({ productoId, isDetail = false }) => {
     <IonCard className="p-6 mt-6">
       <IonCardHeader>
         <IonCardTitle className="text-3xl font-bold text-orange-500 text-center mb-4">
-          Califica este producto
+          Calificación
         </IonCardTitle>
       </IonCardHeader>
 
-      <StarRatings
-        rating={rating}
-        starRatedColor="gold"
-        changeRating={(newRating) => setRating(newRating)}
-        numberOfStars={5}
-        name="rating"
-        starDimension="40px"
-        starSpacing="5px"
-      />
-
-      <IonInput
-        placeholder="Escribe tu comentario aquí"
-        value={comment}
-        onIonInput={(e) => setComment(e.detail.value)}
-      />
-
-      <IonButton
-        onClick={handleSubmit}
-        expand="full"
-        className="mt-4"
-        disabled={isSubmitting}
-      >
-        {isSubmitting ? 'Enviando...' : 'Enviar Calificación'}
-      </IonButton>
+      {/* Mostrar promedio de calificación */}
+      <div className="text-center mb-4">
+        <StarRatings
+          rating={averageRating}
+          starRatedColor="gold"
+          numberOfStars={5}
+          starDimension="40px"
+          starSpacing="5px"
+        />
+      </div>
 
       {/* Botón para mostrar/ocultar los comentarios */}
       <IonButton
@@ -171,6 +157,33 @@ const Calificacion = ({ productoId, isDetail = false }) => {
           ))}
         </div>
       )}
+
+      {/* Sección para agregar rating y comentario */}
+      <h2 className="text-2xl font-semibold text-orange-500 text-center mt-6 mb-4">Califica este producto</h2>
+      <div className="mt-4">
+        <StarRatings
+          rating={rating}
+          starRatedColor="gold"
+          changeRating={(newRating) => setRating(newRating)}
+          numberOfStars={5}
+          name="rating"
+          starDimension="40px"
+          starSpacing="5px"
+        />
+        <IonInput
+          placeholder="Escribe tu comentario aquí"
+          value={comment}
+          onIonInput={(e) => setComment(e.detail.value)}
+        />
+        <IonButton
+          onClick={handleSubmit}
+          expand="full"
+          className="mt-4"
+          disabled={isSubmitting}
+        >
+          {isSubmitting ? 'Enviando...' : 'Enviar Calificación'}
+        </IonButton>
+      </div>
     </IonCard>
   );
 };

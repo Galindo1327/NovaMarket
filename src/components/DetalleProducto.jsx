@@ -88,13 +88,7 @@ const DetalleProducto = () => {
               {producto.descripcion || "Este es un placeholder para la descripción del producto."}
             </div>
 
-            <div className="mb-4">
-              <IonLabel className="text-2xl block text-gray-700 font-bold">Promedio de Calificaciones:</IonLabel>
-              <div className="flex justify-center mb-2">
-                {renderAverageStars()}
-              </div>
-              
-            </div>
+            
           </IonCardContent>
 
           <Calificacion productoId={producto.id} isDetail={true} />

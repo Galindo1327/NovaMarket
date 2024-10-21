@@ -157,14 +157,14 @@ const Feed = () => {
                         className="w-full h-40 object-contain p-4"
                       />
                       <IonCardHeader>
-                        <IonCardTitle className="text-xl font-bold text-gray-800">
+                        <IonCardTitle className="text-xl text-center font-bold text-gray-800">
                           {producto.nombre}
                         </IonCardTitle>
-                        <IonCardSubtitle className="text-lg text-red-500">
+                        <IonCardSubtitle className="text-lg text-center  text-red-500">
                           {producto.precio}
                         </IonCardSubtitle>
                       </IonCardHeader>
-                      
+
                       {/* Mostrar solo las estrellas y el número de comentarios */}
                       <Calificacion productoId={producto.id} isDetail={false} />
 
