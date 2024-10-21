@@ -75,7 +75,7 @@ const Perfil = () => {
             </IonItem>
 
             <IonItem>
-              <IonLabel position="stacked">Dirección</IonLabel>
+              <IonLabel position="stacked">Ciudad</IonLabel>
               {editing ? (
                 <IonInput
                   value={userData.direccion}

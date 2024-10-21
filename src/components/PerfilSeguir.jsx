@@ -26,7 +26,7 @@ const Perfil = () => {
 
         <IonItem lines="none">
           <IonIcon icon={locationOutline} slot="start" />
-          <IonInput value="Ubicación" readonly />
+          <IonInput value="Ciudad" readonly />
         </IonItem>
 
         <IonItem lines="none">
@@ -35,7 +35,7 @@ const Perfil = () => {
         </IonItem>
 
         <IonButton expand="full" color="primary" style={{ marginTop: '20px' }}>
-          Follow
+          Enviar un mensaje
         </IonButton>
       </IonContent>
     </IonPage>
