@@ -1,16 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonIcon, IonHeader, IonToolbar, IonTitle, IonPopover, IonList, IonItem, IonChip, IonLabel } from '@ionic/react';
 import { searchOutline, funnelOutline, closeCircleOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../credentials';
 import carro from '../assets/carro.jpg';
 import estufa from '../assets/estufa.avif';
 import mt09 from '../assets/mt09.jpg';
 import xtz from '../assets/xtz.jpg';
 import ramen from '../assets/ramen.avif';
 import bike from '../assets/bike.avif';
+import nevera from '../assets/Nevera.jpg';
+import macbook from '../assets/Mcbook.webp';
+import ducati from '../assets/Ducati.avif';
+import tv from '../assets/Tv.png';
+import bicicleta from '../assets/Cicla.jpg';
+import lavadora from '../assets/LavadoraSec.avif';
+import iphone from '../assets/Iphone.jpg';
+import bmwMoto from '../assets/Bmw.jpg';
+import horno from '../assets/Horno.jpg';
+import sony from '../assets/Sony.jpg';
+import nikon from '../assets/Nikon.jpg';
+import s24 from '../assets/Samsung.png';
+import logo from '../assets/logoNova.png';
 
 const Feed = () => {
-  // Definimos los productos a mostrar
   const history = useHistory();
   const productos = [
     { id: 1, nombre: 'CARRO', precio: '$23.000.000', tipo: 'vehículo', img: carro },
@@ -19,19 +33,45 @@ const Feed = () => {
     { id: 4, nombre: 'Chicken Ramen', precio: '$20.950', tipo: 'comida', img: ramen },
     { id: 5, nombre: 'XTZ 250', precio: '$17.750.000', tipo: 'vehículo', img: xtz },
     { id: 6, nombre: 'CICLA CAMBIOS', precio: '$225.000', tipo: 'vehículo', img: bike },
+    { id: 13, nombre: 'Refrigerador Samsung RF28R7551', precio: '$4.299.900', img: nevera },
+    { id: 14, nombre: 'MacBook Pro 16" M2 Max', precio: '$9.999.000', img: macbook },
+    { id: 15, nombre: 'Ducati Panigale V4 S', precio: '$129.900.000', img: ducati },
+    { id: 16, nombre: 'Smart TV Samsung Neo QLED 75"', precio: '$7.499.900', img: tv },
+    { id: 17, nombre: 'Bicicleta Specialized S-Works Tarmac SL7', precio: '$35.900.000', img: bicicleta },
+    { id: 18, nombre: 'Lavadora-Secadora LG WD22VV2S29B', precio: '$3.799.900', img: lavadora },
+    { id: 19, nombre: 'iPhone 15 Pro Max 1TB', precio: '$7.999.000', img: iphone },
+    { id: 20, nombre: 'BMW R 1250 GS Adventure', precio: '$118.900.000', img: bmwMoto },
+    { id: 21, nombre: 'Horno Eléctrico Whirlpool WOS51EC7HS', precio: '$2.899.900', img: horno },
+    { id: 22, nombre: 'Cámara Sony Alpha A7R V', precio: '$6.999.000', img: sony },
+    { id: 23, nombre: 'Cámara Nikon D5300', precio: '$6.500.000', img: nikon },
+    { id: 24, nombre: 'Samsung S24 Plus 1Tb', precio: '$9.950.000', img: s24 }
   ];
 
-  // Estado para el texto de búsqueda
+  const [firebaseProductos, setFirebaseProductos] = useState([]);
   const [searchText, setSearchText] = useState('');
-  
-  // Estado para el filtro
   const [filtro, setFiltro] = useState('');
-  
-  // Estado para manejar el popover de filtros
   const [showPopover, setShowPopover] = useState(false);
 
-  // Filtrar productos según el texto de búsqueda y el filtro
-  const productosFiltrados = productos.filter(producto =>
+  useEffect(() => {
+    const fetchProductos = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'DetalleProducto'));
+        const productosFirebase = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setFirebaseProductos(productosFirebase);
+      } catch (error) {
+        console.error('Error al obtener productos:', error);
+      }
+    };
+
+    fetchProductos();
+  }, []);
+
+  const allProducts = [...productos, ...firebaseProductos];
+
+  const productosFiltrados = allProducts.filter(producto =>
     producto.nombre.toLowerCase().includes(searchText.toLowerCase()) &&
     (filtro === '' || producto.tipo === filtro)
   );
@@ -40,20 +80,30 @@ const Feed = () => {
     history.push('/producto', { producto });
   };
 
+
   return (
     <IonPage>
-      {/* Barra de navegación */}
+    {/* Barra de navegación */}
       <IonHeader>
-        <IonToolbar style={{ backgroundColor: '#3b82f6' }}>
-          <IonTitle className='text-white'>NovaMarket</IonTitle>
-          {/* Logo personalizado */}
-          <img src="assets/carro.jpg" alt="Logo" style={{ width: '40px', position: 'absolute', right: '10px', top: '5px' }} />
+        <IonToolbar className="h-20 flex items-center">
+          <div className="bg-blue-800 flex items-center w-full justify-between px-4">
+            <div className="flex items-center space-x-4">
+              <img src={logo} alt="Logo" className="w-20 h-20" />
+              <IonTitle className="text-white text-2xl font-bold">NovaMarket</IonTitle>
+            </div>
+            <IonButton
+              shape="round"
+              color="light"
+              className="ml-2 text-3xl"
+              onClick={() => history.push('/agregar-producto')}
+            >
+              +
+            </IonButton>
+          </div>
         </IonToolbar>
       </IonHeader>
-
       {/* Contenido del Feed */}
       <IonContent className="ion-padding" style={{ backgroundColor: '#ffffff' }}>
-
         {/* Barra de búsqueda */}
         <div className="flex justify-center items-center mb-4">
           <IonInput 
@@ -62,7 +112,7 @@ const Feed = () => {
               marginTop: "10px", color: 'black',
               textIndent: '15px' }} 
             value={searchText}
-            onIonInput={(e) => setSearchText(e.target.value)} // Actualiza el texto de búsqueda
+            onIonInput={(e) => setSearchText(e.target.value)}
           />
           <IonButton shape="round" color="light" className='ml-2' style={{marginTop: "10px"}}>
             <IonIcon icon={searchOutline} />
@@ -99,21 +149,37 @@ const Feed = () => {
       
         {/* Grid de productos */}
         <IonGrid>
-          <IonRow>
+          <IonRow className="flex flex-wrap">
             {productosFiltrados.length > 0 ? (
               productosFiltrados.map((producto) => (
-                <IonCol size="6" key={producto.id} className="ion-align-self-center">
-                  <IonCard onClick={() => handleProductClick(producto)}>
-                    <img src={producto.img} alt={producto.nombre} style={{ width: '100px', height: '100px', margin: 'auto',   }} />
+                <IonCol size="6" key={producto.id} className="p-2 flex justify-center">
+                  <IonCard 
+                    onClick={() => handleProductClick(producto)}
+                    className="w-full max-w-xs bg-white rounded-lg shadow-lg"
+                  >
+                    <img 
+                      src={producto.img} 
+                      alt={producto.nombre} 
+                      // style={{ width: '100px', height: '100px', margin: 'auto',   }} 
+                      className="w-full h-40 object-contain p-4"
+                    />
                     <IonCardHeader>
-                      <IonCardTitle style={{ fontSize: '1em' }}>{producto.nombre}</IonCardTitle>
-                      <IonCardSubtitle style={{ fontSize: '0.9em' }}>{producto.precio}</IonCardSubtitle>
+                      <IonCardTitle 
+                        // style={{ fontSize: '1em' }}
+                        className="text-xl font-bold text-gray-800"
+                      >{producto.nombre}
+                      </IonCardTitle>
+                      <IonCardSubtitle 
+                        // style={{ fontSize: '0.9em' }}
+                        className="text-lg text-red-500"
+                      >{producto.precio}
+                      </IonCardSubtitle>
                     </IonCardHeader>
                   </IonCard>
                 </IonCol>
               ))
             ) : (
-              <p>No se encontraron productos</p> // Mensaje cuando no se encuentra nada
+              <p>No se encontraron productos</p>
             )}
           </IonRow>
         </IonGrid>
