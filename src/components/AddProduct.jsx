@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton, IonItem, IonLabel, IonSelect, IonSelectOption, IonTextarea } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
+import { storage, db } from '../credentials';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { collection, addDoc } from 'firebase/firestore';
 
 const AddProduct = ({ onAddProduct }) => {
   const history = useHistory();
@@ -10,8 +13,10 @@ const AddProduct = ({ onAddProduct }) => {
     categoria: '',
     detalles: '',
     estado: '',
-    img: ''
+    img: null
   });
+
+  const [uploading, setUploading] = useState(false);
 
   const handleInputChange = (e, field) => {
     setProduct({ ...product, [field]: e.target.value });
@@ -20,29 +25,38 @@ const AddProduct = ({ onAddProduct }) => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setProduct({ ...product, img: URL.createObjectURL(file) }); // Para mostrar la imagen seleccionada
+      setProduct({ ...product, img: file });
     }
   };
 
-const handleSubmit = () => {
-  if (typeof onAddProduct === 'function') {
-    const newProduct = { ...product, id: Date.now() }; // Agregar ID único al producto
-    onAddProduct(newProduct); // Llama a la función para agregar el producto
-    history.push('/feed'); // Redirige de nuevo al feed
+  const handleSubmit = async () => {
+    if (product.img) {
+      setUploading(true);
+      const imgRef = ref(storage, `productos/${Date.now()}-${product.img.name}`);
+      await uploadBytes(imgRef, product.img);
+      const imgUrl = await getDownloadURL(imgRef);
 
-    // Limpiar los campos después de agregar
-    setProduct({
-      nombre: '',
-      precio: '',
-      categoria: '',
-      detalles: '',
-      estado: '',
-      img: ''
-    });
-  } else {
-    console.error('onAddProduct no es una función');
-  }
-};
+      const newProduct = {
+        nombre: product.nombre,
+        precio: product.precio,
+        categoria: product.categoria,
+        detalles: product.detalles,
+        estado: product.estado,
+        img: imgUrl,
+      };
+  
+      await addDoc(collection(db, 'DetalleProducto'), newProduct);
+  
+      if (onAddProduct) {
+        onAddProduct(newProduct);
+      }
+
+      setUploading(false);
+      history.push('/feed');
+    } else {
+      console.error('Debes seleccionar una imagen');
+    }
+  };
 
   return (
     <IonPage>
@@ -57,7 +71,7 @@ const handleSubmit = () => {
           <IonItem>
             <IonLabel className="text-left" position="floating">Nombre del producto</IonLabel>
             <IonInput
-              className="mt-2" // Añadir margen superior
+              className="mt-2"
               value={product.nombre}
               onIonInput={(e) => handleInputChange(e, 'nombre')}
               required
@@ -133,8 +147,9 @@ const handleSubmit = () => {
             expand="block"
             onClick={handleSubmit}
             className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+            disabled={uploading}  
           >
-            Subir Producto
+            {uploading ? 'Subiendo...' : 'Subir Producto'}
           </IonButton>
         </div>
       </IonContent>

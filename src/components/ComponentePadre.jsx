@@ -1,6 +1,6 @@
 // ParentComponent.jsx
 import React from 'react';
-import AddProduct from './AñadirProducto'; 
+import AddProduct from './AddProduct'; 
 
 const ParentComponent = () => {
   const handleAddProduct = (newProduct) => {

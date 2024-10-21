@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonIcon, IonHeader, IonToolbar, IonTitle, IonPopover, IonList, IonItem, IonChip, IonLabel } from '@ionic/react';
 import { searchOutline, funnelOutline, closeCircleOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import Calificacion from './Calificacion';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../credentials';
 import carro from '../assets/carro.jpg';
 import estufa from '../assets/estufa.avif';
 import mt09 from '../assets/mt09.jpg';
@@ -22,7 +24,6 @@ import sony from '../assets/Sony.jpg';
 import nikon from '../assets/Nikon.jpg';
 import s24 from '../assets/Samsung.png';
 import logo from '../assets/logoNova.png';
-import { getFirestore, collection, getDocs } from 'firebase/firestore'; // Importar Firestore
 
 const Feed = () => {
   const history = useHistory();
@@ -47,18 +48,31 @@ const Feed = () => {
     { id: 24, nombre: 'Samsung S24 Plus 1Tb', precio: '$9.950.000', img: s24 }
   ];
 
-  // Estado para el texto de búsqueda
+  const [firebaseProductos, setFirebaseProductos] = useState([]);
   const [searchText, setSearchText] = useState('');
-  
-  // Estado para el filtro
   const [filtro, setFiltro] = useState('');
-  
-  // Estado para manejar el popover de filtros
   const [showPopover, setShowPopover] = useState(false);
 
+  useEffect(() => {
+    const fetchProductos = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'DetalleProducto'));
+        const productosFirebase = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setFirebaseProductos(productosFirebase);
+      } catch (error) {
+        console.error('Error al obtener productos:', error);
+      }
+    };
 
-  // Filtrar productos según el texto de búsqueda y el filtro
-  const productosFiltrados = productos.filter(producto =>
+    fetchProductos();
+  }, []);
+
+  const allProducts = [...productos, ...firebaseProductos];
+
+  const productosFiltrados = allProducts.filter(producto =>
     producto.nombre.toLowerCase().includes(searchText.toLowerCase()) &&
     (filtro === '' || producto.tipo === filtro)
   );
@@ -71,33 +85,26 @@ const Feed = () => {
   return (
     <IonPage>
     {/* Barra de navegación */}
-<IonHeader>
-  <IonToolbar className="h-20 flex items-center">
-    <div className="bg-blue-800 flex items-center w-full justify-between px-4">
-      <div className="flex items-center space-x-4">
-        <img src={logo} alt="Logo" className="w-20 h-20" />
-        <IonTitle className="text-white text-2xl font-bold">NovaMarket</IonTitle>
-      </div>
-      <IonButton
-        shape="round"
-        color="light"
-        className="ml-2 text-3xl"
-        onClick={() => history.push('/agregar-producto')}
-      >
-        +
-      </IonButton>
-    </div>
-  </IonToolbar>
-</IonHeader>
-
-
-
-
-
-
+      <IonHeader>
+        <IonToolbar className="h-20 flex items-center">
+          <div className="bg-blue-800 flex items-center w-full justify-between px-4">
+            <div className="flex items-center space-x-4">
+              <img src={logo} alt="Logo" className="w-20 h-20" />
+              <IonTitle className="text-white text-2xl font-bold">NovaMarket</IonTitle>
+            </div>
+            <IonButton
+              shape="round"
+              color="light"
+              className="ml-2 text-3xl"
+              onClick={() => history.push('/agregar-producto')}
+            >
+              +
+            </IonButton>
+          </div>
+        </IonToolbar>
+      </IonHeader>
       {/* Contenido del Feed */}
       <IonContent className="ion-padding" style={{ backgroundColor: '#ffffff' }}>
-
         {/* Barra de búsqueda */}
         <div className="flex justify-center items-center mb-4">
           <IonInput 
@@ -106,7 +113,7 @@ const Feed = () => {
               marginTop: "10px", color: 'black',
               textIndent: '15px' }} 
             value={searchText}
-            onIonInput={(e) => setSearchText(e.target.value)} // Actualiza el texto de búsqueda
+            onIonInput={(e) => setSearchText(e.target.value)}
           />
           <IonButton shape="round" color="light" className='ml-2' style={{marginTop: "10px"}}>
             <IonIcon icon={searchOutline} />
@@ -173,7 +180,7 @@ const Feed = () => {
                 )
               )
             ) : (
-              <p>No se encontraron productos</p> // Mensaje cuando no se encuentra nada
+              <p>No se encontraron productos</p>
             )}
           </IonRow>
         </IonGrid>
