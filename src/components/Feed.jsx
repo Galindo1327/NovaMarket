@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonIcon, IonHeader, IonToolbar, IonTitle, IonPopover, IonList, IonItem, IonChip, IonLabel } from '@ionic/react';
-import { searchOutline, funnelOutline, closeCircleOutline } from 'ionicons/icons';
+import { searchOutline, funnelOutline, closeCircleOutline, personOutline } from 'ionicons/icons';  // Añadir icono de perfil
 import { useHistory } from 'react-router-dom';
 import Calificacion from './Calificacion';
 import { collection, getDocs } from 'firebase/firestore';
@@ -77,14 +77,13 @@ const Feed = () => {
     (filtro === '' || producto.tipo === filtro)
   );
 
- const handleProductClick = (producto) => {
+  const handleProductClick = (producto) => {
     history.push('/producto', { producto });
   };
 
-
   return (
     <IonPage>
-    {/* Barra de navegación */}
+      {/* Barra de navegación */}
       <IonHeader>
         <IonToolbar className="h-20 flex items-center">
           <div className="bg-blue-800 flex items-center w-full justify-between px-4">
@@ -92,43 +91,41 @@ const Feed = () => {
               <img src={logo} alt="Logo" className="w-20 h-20" />
               <IonTitle className="text-white text-2xl font-bold">NovaMarket</IonTitle>
             </div>
-            <IonButton
-              shape="round"
-              color="light"
-              className="ml-2 text-3xl"
-              onClick={() => history.push('/agregar-producto')}
-            >
-              +
-            </IonButton>
+            <div className="flex items-center space-x-4">
+              <IonButton shape="round" color="light" className="ml-2 text-3xl" onClick={() => history.push('/agregar-producto')}>
+                +
+              </IonButton>
+
+              {/* Botón para redirigir al perfil */}
+              <IonButton shape="round" color="light" onClick={() => history.push('/perfil')}>
+                <IonIcon icon={personOutline} />
+              </IonButton>
+            </div>
           </div>
         </IonToolbar>
       </IonHeader>
+
       {/* Contenido del Feed */}
       <IonContent className="ion-padding" style={{ backgroundColor: '#ffffff' }}>
         {/* Barra de búsqueda */}
         <div className="flex justify-center items-center mb-4">
-          <IonInput 
-            placeholder="Busca tu producto" 
-            style={{ width: '60%', borderRadius: '20px', backgroundColor: 'white', border: '0.5px solid #ccc', 
-              marginTop: "10px", color: 'black',
-              textIndent: '15px' }} 
+          <IonInput
+            placeholder="Busca tu producto"
+            style={{ width: '60%', borderRadius: '20px', backgroundColor: 'white', border: '0.5px solid #ccc', marginTop: "10px", color: 'black', textIndent: '15px' }}
             value={searchText}
             onIonInput={(e) => setSearchText(e.target.value)}
           />
-          <IonButton shape="round" color="light" className='ml-2' style={{marginTop: "10px"}}>
+          <IonButton shape="round" color="light" className='ml-2' style={{ marginTop: "10px" }}>
             <IonIcon icon={searchOutline} />
           </IonButton>
 
           {/* Botón para mostrar el popover de filtros */}
-          <IonButton shape="round" color="light" className='ml-2' style={{marginTop: "10px"}} onClick={() => setShowPopover(true)}>
+          <IonButton shape="round" color="light" className='ml-2' style={{ marginTop: "10px" }} onClick={() => setShowPopover(true)}>
             <IonIcon icon={funnelOutline} />
           </IonButton>
 
           {/* Popover con las opciones de filtrado */}
-          <IonPopover
-            isOpen={showPopover}
-            onDidDismiss={() => setShowPopover(false)}
-          >
+          <IonPopover isOpen={showPopover} onDidDismiss={() => setShowPopover(false)}>
             <IonList>
               <IonItem button onClick={() => { setFiltro(''); setShowPopover(false); }}>Todos</IonItem>
               <IonItem button onClick={() => { setFiltro('vehículo'); setShowPopover(false); }}>Vehículos</IonItem>
@@ -147,7 +144,7 @@ const Feed = () => {
             </IonChip>
           </div>
         )}
-      
+
         {/* Grid de productos */}
         <IonGrid>
           <IonRow className="flex flex-wrap">
@@ -180,7 +177,9 @@ const Feed = () => {
                 )
               )
             ) : (
-              <p>No se encontraron productos</p>
+              <div className="flex justify-center items-center h-40">
+                <p className="text-gray-600 text-lg">No se encontraron productos con tu búsqueda o filtro</p>
+              </div>
             )}
           </IonRow>
         </IonGrid>
