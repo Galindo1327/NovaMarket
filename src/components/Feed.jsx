@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonIcon, IonHeader, IonToolbar, IonTitle, IonPopover, IonList, IonItem, IonChip, IonLabel } from '@ionic/react';
 import { searchOutline, funnelOutline, closeCircleOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
+import Calificacion from './Calificacion';
 import { collection, getDocs } from 'firebase/firestore';
 import { db } from '../credentials';
 import carro from '../assets/carro.jpg';
@@ -76,7 +77,7 @@ const Feed = () => {
     (filtro === '' || producto.tipo === filtro)
   );
 
-  const handleProductClick = (producto) => {
+ const handleProductClick = (producto) => {
     history.push('/producto', { producto });
   };
 
@@ -152,32 +153,32 @@ const Feed = () => {
           <IonRow className="flex flex-wrap">
             {productosFiltrados.length > 0 ? (
               productosFiltrados.map((producto) => (
-                <IonCol size="6" key={producto.id} className="p-2 flex justify-center">
-                  <IonCard 
-                    onClick={() => handleProductClick(producto)}
-                    className="w-full max-w-xs bg-white rounded-lg shadow-lg"
-                  >
-                    <img 
-                      src={producto.img} 
-                      alt={producto.nombre} 
-                      // style={{ width: '100px', height: '100px', margin: 'auto',   }} 
-                      className="w-full h-40 object-contain p-4"
-                    />
-                    <IonCardHeader>
-                      <IonCardTitle 
-                        // style={{ fontSize: '1em' }}
-                        className="text-xl font-bold text-gray-800"
-                      >{producto.nombre}
-                      </IonCardTitle>
-                      <IonCardSubtitle 
-                        // style={{ fontSize: '0.9em' }}
-                        className="text-lg text-red-500"
-                      >{producto.precio}
-                      </IonCardSubtitle>
-                    </IonCardHeader>
-                  </IonCard>
-                </IonCol>
-              ))
+                  <IonCol size="6" key={producto.id} className="p-2 flex justify-center">
+                    <IonCard 
+                      onClick={() => handleProductClick(producto)}
+                      className="w-full max-w-xs bg-white rounded-lg shadow-lg"
+                    >
+                      <img 
+                        src={producto.img} 
+                        alt={producto.nombre} 
+                        className="w-full h-40 object-contain p-4"
+                      />
+                      <IonCardHeader>
+                        <IonCardTitle className="text-xl text-center font-bold text-gray-800">
+                          {producto.nombre}
+                        </IonCardTitle>
+                        <IonCardSubtitle className="text-lg text-center  text-red-500">
+                          {producto.precio}
+                        </IonCardSubtitle>
+                      </IonCardHeader>
+
+                      {/* Mostrar solo las estrellas y el número de comentarios */}
+                      <Calificacion productoId={producto.id} isDetail={false} />
+
+                    </IonCard>
+                  </IonCol>
+                )
+              )
             ) : (
               <p>No se encontraron productos</p>
             )}
