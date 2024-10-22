@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonIcon, IonHeader, IonToolbar, IonTitle, IonPopover, IonList, IonItem, IonChip, IonLabel } from '@ionic/react';
 import { searchOutline, funnelOutline, closeCircleOutline, personOutline } from 'ionicons/icons';  // Añadir icono de perfil
 import { useHistory } from 'react-router-dom';
+import Calificacion from './Calificacion';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../credentials';
 import carro from '../assets/carro.jpg';
 import estufa from '../assets/estufa.avif';
 import mt09 from '../assets/mt09.jpg';
@@ -45,11 +48,31 @@ const Feed = () => {
     { id: 24, nombre: 'Samsung S24 Plus 1Tb', precio: '$9.950.000', img: s24 }
   ];
 
+  const [firebaseProductos, setFirebaseProductos] = useState([]);
   const [searchText, setSearchText] = useState('');
   const [filtro, setFiltro] = useState('');
   const [showPopover, setShowPopover] = useState(false);
 
-  const productosFiltrados = productos.filter(producto =>
+  useEffect(() => {
+    const fetchProductos = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'DetalleProducto'));
+        const productosFirebase = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setFirebaseProductos(productosFirebase);
+      } catch (error) {
+        console.error('Error al obtener productos:', error);
+      }
+    };
+
+    fetchProductos();
+  }, []);
+
+  const allProducts = [...productos, ...firebaseProductos];
+
+  const productosFiltrados = allProducts.filter(producto =>
     producto.nombre.toLowerCase().includes(searchText.toLowerCase()) &&
     (filtro === '' || producto.tipo === filtro)
   );
@@ -127,16 +150,32 @@ const Feed = () => {
           <IonRow className="flex flex-wrap">
             {productosFiltrados.length > 0 ? (
               productosFiltrados.map((producto) => (
-                <IonCol size="6" key={producto.id} className="p-2 flex justify-center">
-                  <IonCard onClick={() => handleProductClick(producto)} className="w-full max-w-xs bg-white rounded-lg shadow-lg">
-                    <img src={producto.img} alt={producto.nombre} className="w-full h-40 object-contain p-4" />
-                    <IonCardHeader>
-                      <IonCardTitle className="text-xl font-bold text-gray-800">{producto.nombre}</IonCardTitle>
-                      <IonCardSubtitle className="text-lg text-gray-600">{producto.precio}</IonCardSubtitle>
-                    </IonCardHeader>
-                  </IonCard>
-                </IonCol>
-              ))
+                  <IonCol size="6" key={producto.id} className="p-2 flex justify-center">
+                    <IonCard 
+                      onClick={() => handleProductClick(producto)}
+                      className="w-full max-w-xs bg-white rounded-lg shadow-lg"
+                    >
+                      <img 
+                        src={producto.img} 
+                        alt={producto.nombre} 
+                        className="w-full h-40 object-contain p-4"
+                      />
+                      <IonCardHeader>
+                        <IonCardTitle className="text-xl text-center font-bold text-gray-800">
+                          {producto.nombre}
+                        </IonCardTitle>
+                        <IonCardSubtitle className="text-lg text-center  text-red-500">
+                          {producto.precio}
+                        </IonCardSubtitle>
+                      </IonCardHeader>
+
+                      {/* Mostrar solo las estrellas y el número de comentarios */}
+                      <Calificacion productoId={producto.id} isDetail={false} />
+
+                    </IonCard>
+                  </IonCol>
+                )
+              )
             ) : (
               <div className="flex justify-center items-center h-40">
                 <p className="text-gray-600 text-lg">No se encontraron productos con tu búsqueda o filtro</p>
