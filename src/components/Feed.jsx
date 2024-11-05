@@ -106,7 +106,7 @@ const Feed = () => {
       </IonHeader>
 
       {/* Contenido del Feed */}
-      <IonContent className="ion-padding" style={{ backgroundColor: '#ffffff' }}>
+      <IonContent className="ion-padding">
         {/* Barra de búsqueda */}
         <div className="flex justify-center items-center mb-4">
           <IonInput
