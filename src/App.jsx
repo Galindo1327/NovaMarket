@@ -7,6 +7,10 @@ import Login from './pages/Login';
 import Feed from './components/Feed';
 import DetalleProducto from './components/DetalleProducto';
 import { AuthProvider } from './context/authContext'; // No le hagan caso a este error XD
+import AddProduct from './components/AddProduct';
+import ParentComponent from './components/ComponentePadre';
+import Perfil from './components/Perfil';
+import PerfilSeguir from './components/PerfilSeguir';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -33,7 +37,7 @@ import '@ionic/react/css/display.css';
 
 /* import '@ionic/react/css/palettes/dark.always.css'; */
 /* import '@ionic/react/css/palettes/dark.class.css'; */
-import '@ionic/react/css/palettes/dark.system.css';
+// import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 
@@ -58,7 +62,11 @@ const App = () => (
           </Route>
           <Route path="/feed" component={Feed} exact={true} />
           <Route path="/producto" component={DetalleProducto} exact={true} />
+          <Route path="/perfil" component={Perfil} exact />
+          <Route path="/perfil-seguir" component={PerfilSeguir} exact />
+          {/* <Route exact path="/" render={() => <Redirect to="/perfil" />} /> */}
           {/* <Route path="/chat" component={Chat}  exact={true}/> */} 
+          <Route path="/agregar-producto" component={ParentComponent} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
