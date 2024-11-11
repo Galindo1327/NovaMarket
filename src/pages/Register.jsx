@@ -8,8 +8,10 @@ import logo from '../assets/logoNova.png';
 function Register() {
     const auth = useAuth();
 
+    const [nameRegister, setNameRegister] = useState("");
     const [emailRegister, setEmailRegister] = useState("");
     const [passwordRegister, setPasswordRegister] = useState("");
+    const [nameError, setNameError] = useState(false);
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false)
     console.log("State Form:", emailRegister, passwordRegister);
@@ -18,6 +20,14 @@ function Register() {
 
     const handleRegister = (e) => {
         e.preventDefault();
+
+        const namePattern = /^[A-Za-z]+$/;
+        if (!namePattern.test(nameRegister)) {
+            setNameError(true);
+            return;
+        }
+        setNameError(false);
+
         const emailPattern = /^[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}$/;
         if (!emailPattern.test(emailRegister)) {
             setEmailError(true);
@@ -31,7 +41,7 @@ function Register() {
             return;
         }
         setPasswordError(false);
-        auth.register(emailRegister, passwordRegister);
+        auth.register(emailRegister, passwordRegister, nameRegister);
 
         history.push('/login');
     };
@@ -55,6 +65,10 @@ function Register() {
                         id="outlined-basic" 
                         label="Ingresa Nombre" 
                         variant="outlined" 
+                        error={nameError}
+                        helperText={nameError ? "El nombre solo debe contener letras de la A-Z.":""}
+                        value={nameRegister}
+                        onChange={(e) => setNameRegister(e.target.value)}
                         InputProps={{
                             style: { backgroundColor: 'white' } // Fondo blanco para los campos de texto
                         }}
