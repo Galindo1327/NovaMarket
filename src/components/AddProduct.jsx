@@ -4,6 +4,7 @@ import { useHistory } from 'react-router-dom';
 import { storage, db } from '../credentials';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc } from 'firebase/firestore';
+import logo from '../assets/logoNova.png'; 
 
 const AddProduct = ({ onAddProduct }) => {
   const history = useHistory();
@@ -60,7 +61,18 @@ const AddProduct = ({ onAddProduct }) => {
 
   return (
     <IonPage>
+      
       <IonHeader>
+      <div className="bg-blue-800 py-5 text-center text-white relative flex items-center justify-center">
+        <h1 className="text-4xl font-bold mb-2 mr-2">NovaMarket</h1>
+        <div className="mt-2">
+          <img 
+            src={logo} 
+            alt="Logo" 
+            className="absolute right-4 top-4 w-10 sm:w-12 md:w-14 lg:w-16 xl:w-19 max-w-xs" 
+          />
+        </div>
+      </div>
         <IonToolbar>
           <IonTitle className="text-center">Agregar Producto</IonTitle>
         </IonToolbar>
@@ -68,6 +80,7 @@ const AddProduct = ({ onAddProduct }) => {
       <IonContent className="ion-padding">
         <div className="max-w-md mx-auto">
           {/* Campos del formulario */}
+          
           <IonItem>
             <IonLabel className="text-left" position="floating">Nombre del producto</IonLabel>
             <IonInput
@@ -99,6 +112,9 @@ const AddProduct = ({ onAddProduct }) => {
               <IonSelectOption value="vehículo">Vehículo</IonSelectOption>
               <IonSelectOption value="electrodoméstico">Electrodoméstico</IonSelectOption>
               <IonSelectOption value="comida">Comida</IonSelectOption>
+              <IonSelectOption value="Aseo">Aseo</IonSelectOption>
+              <IonSelectOption value="Jugueteria">Jugueteria</IonSelectOption>
+              <IonSelectOption value="Cuidado Personal">Cuidado Personal</IonSelectOption>
             </IonSelect>
           </IonItem>
 
@@ -137,7 +153,7 @@ const AddProduct = ({ onAddProduct }) => {
             />
             <button
                 onClick={() => document.querySelector('input[type="file"]').click()} 
-                className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-2"
+                className="mt-2 bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mb-2"
             >
                 Seleccionar archivo
             </button>
@@ -146,11 +162,12 @@ const AddProduct = ({ onAddProduct }) => {
           <IonButton
             expand="block"
             onClick={handleSubmit}
-            className="mt-4 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+            className="mt-4 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700 rounded p-1"
             disabled={uploading}  
           >
             {uploading ? 'Subiendo...' : 'Subir Producto'}
           </IonButton>
+          <IonButton expand="block" onClick={() => history.goBack()} className="mt-4 p-1 rounded mx-auto block  text-center bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Regresar</IonButton>
         </div>
       </IonContent>
     </IonPage>

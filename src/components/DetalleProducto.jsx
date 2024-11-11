@@ -17,6 +17,7 @@ const DetalleProducto = () => {
   const [reviews, setReviews] = useState([]); // Estado para guardar las reviews
   const [averageRating, setAverageRating] = useState(0); // Estado para la calificación promedio
 
+
   useEffect(() => {
     if (producto && producto.id) {
       // Escuchar cambios en tiempo real en las calificaciones
@@ -61,12 +62,15 @@ const DetalleProducto = () => {
 
   return (
     <IonPage>
-      <div className="bg-blue-800 py-5 text-center text-white relative">
-        <h1 className="text-4xl font-bold mb-2">NovaMarket</h1>
+       <div className="bg-blue-800 py-5 text-center text-white relative flex items-center justify-center">
+        <h1 className="text-4xl font-bold mb-2 mr-2">NovaMarket</h1>
         <div className="mt-2">
-          <p className="text-2xl">Juan Carlos</p>
+          <img 
+            src={logo} 
+            alt="Logo" 
+            className="absolute right-4 top-4 w-10 sm:w-12 md:w-14 lg:w-16 xl:w-19 max-w-xs" 
+          />
         </div>
-        <img src={logo} alt="Logo" className="absolute right-5 top-5 w-24" />
       </div>
 
       <IonContent className="p-4">
@@ -85,9 +89,10 @@ const DetalleProducto = () => {
           <IonCardContent>
             <IonLabel className="block mb-2 text-gray-600">Descripción:</IonLabel>
             <div className="border border-gray-300 p-2 rounded bg-gray-100 text-gray-700 mb-5">
-              {producto.descripcion || "Este es un placeholder para la descripción del producto."}
+              {producto.detalles}
             </div>
-
+            <IonLabel className="block mb-2 text-gray-600">Vendedor:</IonLabel>
+            <IonButton onClick={() => history.push('/perfil-seguir')} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Juan Carlos</IonButton>
             
           </IonCardContent>
 
@@ -95,7 +100,17 @@ const DetalleProducto = () => {
 
 
           <div className="flex justify-around mb-5">
-            <IonButton onClick={() => history.goBack()} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Regresar</IonButton>
+            <IonButton
+              onClick={() => {
+                history.goBack(); // Regresa a la página anterior (feed)
+                setTimeout(() => {
+                  window.location.reload(); // Recarga la página actual (feed) después de regresar
+                }, 100); // Le damos un pequeño retraso para asegurarnos que el cambio de página se complete antes de recargar
+              }}
+              className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700"
+              >
+              Regresar
+            </IonButton>
             <IonButton onClick={() => history.push('/chat')} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Contactar</IonButton>
           </div>
         </IonCard>
