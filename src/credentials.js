@@ -28,3 +28,4 @@ export const storage = getStorage(appFirebase);
 export const db = getFirestore(appFirebase);
 
 export default appFirebase;
+
