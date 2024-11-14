@@ -8,7 +8,7 @@ se mostraba por encima de el*/
 
   return (
     <IonPage> 
-      <IonContent fullscreen>
+      <IonContent fullscreen >
         <IonHeader collapse="condense"> 
           <IonToolbar>
             <IonTitle size="large">Blank</IonTitle>

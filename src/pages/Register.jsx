@@ -47,8 +47,8 @@ function Register() {
     };
 
     return (
-        <div className="w-screen h-screen flex justify-center bg-[#ffffff] items-center">
-            <IonCard className='w-96 max-w-sm mx-min p-8 bg-[#e5fff9]'>
+        <div className="w-screen h-screen flex justify-center items-center bg-[#0a0a0a]">
+            <IonCard className="w-96 max-w-sm mx-min p-8 bg-[#1a1a1a] shadow-lg rounded-lg border border-gray-700">
                 <IonCardHeader className='text-center text-black'>
                     <div className="flex justify-center mb-4">
                         <img    //Logo importado
@@ -57,8 +57,8 @@ function Register() {
                             className="w-40 h-33"
                         />
                     </div>
-                    <IonCardTitle>NovaMarket</IonCardTitle>
-                    <IonCardSubtitle>Register</IonCardSubtitle>
+                    <IonCardTitle className='text-white'>NovaMarket</IonCardTitle>
+                    <IonCardSubtitle className='text-[#d5d5d5]'>Register</IonCardSubtitle>
                     <br />
                     <div className='flex flex-col gap-4'>
                         <TextField 
@@ -70,7 +70,10 @@ function Register() {
                         value={nameRegister}
                         onChange={(e) => setNameRegister(e.target.value)}
                         InputProps={{
-                            style: { backgroundColor: 'white' } // Fondo blanco para los campos de texto
+                            style: { backgroundColor: '#2a2a2a', color: 'white' },
+                        }}
+                        InputLabelProps={{
+                            style: { color: '#bbbbbb' },
                         }}
                         />
                         <TextField 
@@ -82,7 +85,10 @@ function Register() {
                             onChange={(e) => setEmailRegister(e.target.value)}
                             type="email"
                             InputProps={{
-                                style: { backgroundColor: 'white' } // Fondo blanco para los campos de texto
+                                style: { backgroundColor: '#2a2a2a', color: 'white' },
+                            }}
+                            InputLabelProps={{
+                                style: { color: '#bbbbbb' },
                             }}
                         />
                         <TextField 
@@ -94,7 +100,10 @@ function Register() {
                             onChange={(e) => setPasswordRegister(e.target.value)}
                             type="password"
                             InputProps={{
-                                style: { backgroundColor: 'white' } // Fondo blanco para los campos de texto
+                                style: { backgroundColor: '#2a2a2a', color: 'white' },
+                            }}
+                            InputLabelProps={{
+                                style: { color: '#bbbbbb' },
                             }}
                         />
                         <button 
