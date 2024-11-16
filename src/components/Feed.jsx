@@ -60,12 +60,17 @@ const Feed = () => {
         const productosFirebase = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
+          // Mapea `categoria` a `tipo` para que el filtro funcione
+          tipo: doc.data().categoria || 'otros', // Usa 'otros' como predeterminado si no hay categoría
         }));
         setFirebaseProductos(productosFirebase);
       } catch (error) {
         console.error('Error al obtener productos:', error);
       }
     };
+  
+
+  
 
     fetchProductos();
   }, []);
@@ -87,12 +92,12 @@ const Feed = () => {
       <IonHeader>
         <IonToolbar className="h-20 flex items-center">
           <div className="bg-[#0070ff] flex items-center w-full justify-between px-4 rounded-b-lg shadow-md">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-0">
               <img src={logo} alt="Logo" className="w-20 h-20" />
               <IonTitle className="text-white text-2xl font-bold">NovaMarket</IonTitle>
             </div>
-            <div className="flex items-center space-x-4">
-              <IonButton shape="round" color="light" className="ml-2 text-3xl" onClick={() => history.push('/agregar-producto')}>
+            <div className="flex items-center space-x-2">
+              <IonButton shape="round" color="light" className="ml-2 text-1xl" onClick={() => history.push('/agregar-producto')}>
                 +
               </IonButton>
 
@@ -106,12 +111,17 @@ const Feed = () => {
       </IonHeader>
 
       {/* Contenido del Feed */}
-      <IonContent className="ion-padding bg-[#0a0a0a]">
+      <IonContent className="ion-padding bg-[#0070ff]">
+
+        {/* Overlay oscuro */}
+        {showPopover && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 z-10"></div>
+        )}
         {/* Barra de búsqueda */}
-        <div className="flex justify-center items-center mb-4">
+        <div className="flex justify-center items-center mb-4 ">
           <IonInput
             placeholder="Busca tu producto"
-            style={{ width: '60%', borderRadius: '20px', backgroundColor: '#2a2a2a', border: '0.5px solid #555', marginTop: "10px", color: 'white', textIndent: '15px' }}
+            style={{ width: '60%', borderRadius: '20px', backgroundColor: '#e5e5e5', border: '0.5px', marginTop: "10px", color: 'black', textIndent: '15px' }}
             value={searchText}
             onIonInput={(e) => setSearchText(e.target.value)}
           />
@@ -125,13 +135,17 @@ const Feed = () => {
           </IonButton>
 
           {/* Popover con las opciones de filtrado */}
-          <IonPopover isOpen={showPopover} onDidDismiss={() => setShowPopover(false)}>
+          <IonPopover isOpen={showPopover} onDidDismiss={() => setShowPopover(false)}  className="rounded-lg shadow-lg transform -translate-y-60">
             <IonList>
               <IonItem button onClick={() => { setFiltro(''); setShowPopover(false); }}>Todos</IonItem>
               <IonItem button onClick={() => { setFiltro('vehículo'); setShowPopover(false); }}>Vehículos</IonItem>
               <IonItem button onClick={() => { setFiltro('electrodoméstico'); setShowPopover(false); }}>Electrodomésticos</IonItem>
               <IonItem button onClick={() => { setFiltro('comida'); setShowPopover(false); }}>Comida</IonItem>
               <IonItem button onClick={() => { setFiltro('tecnología'); setShowPopover(false); }}>Tecnología</IonItem>
+              <IonItem button onClick={() => { setFiltro('jugueteria'); setShowPopover(false); }}>Juguetería</IonItem>
+              <IonItem button onClick={() => { setFiltro('aseo'); setShowPopover(false); }}>Aseo</IonItem>
+              <IonItem button onClick={() => { setFiltro('comida'); setShowPopover(false); }}>Comida</IonItem>
+              <IonItem button onClick={() => { setFiltro('aseo personal'); setShowPopover(false); }}>Aseo Personal</IonItem>
             </IonList>
           </IonPopover>
         </div>
@@ -154,7 +168,7 @@ const Feed = () => {
                   <IonCol size="6" key={producto.id} className="p-2 flex justify-center">
                     <IonCard 
                       onClick={() => handleProductClick(producto)}
-                      className="w-full max-w-xs bg-[#1a1a1a] text-white rounded-lg shadow-lg border border-gray-700"
+                      className="w-full max-w-xs bg-[#c7dcff] text-black rounded-lg shadow-lg border"
                     >
                       <img 
                         src={producto.img} 
@@ -162,16 +176,16 @@ const Feed = () => {
                         className="w-full h-40 object-contain p-4"
                       />
                       <IonCardHeader>
-                        <IonCardTitle className="text-xl text-center font-bold text-white">
+                        <IonCardTitle className="text-xl text-center font-bold text-black drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.3)]">
                           {producto.nombre}
                         </IonCardTitle>
-                        <IonCardSubtitle className="text-lg text-center text-green-400">
+                        <IonCardSubtitle className="text-lg text-center text-green-400 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.5)]">
                           {producto.precio}
                         </IonCardSubtitle>
                       </IonCardHeader>
 
                       {/* Mostrar solo las estrellas y el número de comentarios */}
-                      <Calificacion productoId={producto.id} isDetail={false} />
+                      <Calificacion productoId={producto.id} isDetail={false} className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.5)]"/>
 
                     </IonCard>
                   </IonCol>
