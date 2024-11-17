@@ -74,16 +74,17 @@ const DetalleProducto = () => {
 
   return (
     <IonPage>
-      <div className="bg-blue-800 py-5 text-center text-white relative flex items-center justify-center">
+       <div className="bg-blue-800 py-5 text-center text-white relative flex items-center justify-center">
         <h1 className="text-4xl font-bold mb-2 mr-2">NovaMarket</h1>
         <div className="mt-2">
-          <img
-            src={logo}
-            alt="Logo"
-            className="absolute right-4 top-4 w-10 sm:w-12 md:w-14 lg:w-16 xl:w-19 max-w-xs"
+          <img 
+            src={logo} 
+            alt="Logo" 
+            className="absolute right-4 top-4 w-10 sm:w-12 md:w-14 lg:w-16 xl:w-19 max-w-xs" 
           />
         </div>
       </div>
+
 
       <IonContent className="p-4">
         <IonCard className="text-center border-2 border-blue-400 rounded-lg">
@@ -103,9 +104,9 @@ const DetalleProducto = () => {
             <div className="border border-gray-300 p-2 rounded bg-gray-100 text-gray-700 mb-5">
               {producto.detalles}
             </div>
-            <IonButton onClick={() => history.push('/perfil-seguir')} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Info Vendedor</IonButton>
-
-
+            <IonLabel className="block mb-2 text-gray-600">Vendedor:</IonLabel>
+            <IonButton onClick={() => history.push('/perfil-seguir')} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Juan Carlos</IonButton>
+            
           </IonCardContent>
 
           <Calificacion productoId={producto.id} isDetail={true} />

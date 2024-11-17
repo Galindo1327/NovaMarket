@@ -1,7 +1,7 @@
 import { createContext, useContext } from "react";
-import { auth, db } from "../credentials"; // Asegúrate de importar `db` para Firestore
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore"; // Importa las funciones necesarias para Firestore
+import { auth, db } from "../credentials";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 export const authContext = createContext();
 
@@ -16,11 +16,11 @@ export const useAuth = () => {
 export function AuthProvider({ children }) {
     const register = async (email, password, name) => {
         try {
-            // Crea el usuario en Firebase Authentication
             const response = await createUserWithEmailAndPassword(auth, email, password);
             const user = response.user;
 
-            // Guarda el nombre y el correo en Firestore
+            await updateProfile(user, { displayName: name });
+
             await setDoc(doc(db, "users", user.uid), {
                 name: name,
                 email: email,
@@ -43,5 +43,20 @@ export function AuthProvider({ children }) {
         }
     };
 
-    return <authContext.Provider value={{ register, login }}>{children}</authContext.Provider>;
+    const getUserInfo = async (userId) => {
+        try {
+            const userDoc = await getDoc(doc(db, "users", userId));
+            if (userDoc.exists()) {
+                return userDoc.data();
+            } else {
+                console.log("No hay suficiente documento");
+                return null;
+            }
+        } catch (error) {
+            console.error("Error al obtener la información del usuario:", error);
+            throw error;
+        }
+    };
+
+    return <authContext.Provider value={{ register, login, getUserInfo }}>{children}</authContext.Provider>;
 }

@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton, IonItem, IonLabel, IonSelect, IonSelectOption, IonTextarea } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { storage, db } from '../credentials';
+import { storage, db, auth } from '../credentials';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc } from 'firebase/firestore';
 import logo from '../assets/logoNova.png'; 
+import { useAuth } from "../context/authContext"; 
 
 const AddProduct = ({ onAddProduct }) => {
   const history = useHistory();
+  const { getUserInfo } = useAuth();
   const [product, setProduct] = useState({
     nombre: '',
     precio: '',
@@ -18,6 +20,18 @@ const AddProduct = ({ onAddProduct }) => {
   });
 
   const [uploading, setUploading] = useState(false);
+  const [usuario, setUsuario] = useState("");
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        setUsuario(user.displayName);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   const handleInputChange = (e, field) => {
     setProduct({ ...product, [field]: e.target.value });
@@ -44,6 +58,7 @@ const AddProduct = ({ onAddProduct }) => {
         detalles: product.detalles,
         estado: product.estado,
         img: imgUrl,
+        usuario: usuario, 
       };
   
       await addDoc(collection(db, 'DetalleProducto'), newProduct);
@@ -61,18 +76,17 @@ const AddProduct = ({ onAddProduct }) => {
 
   return (
     <IonPage>
-      
       <IonHeader>
-      <div className="bg-blue-800 py-5 text-center text-white relative flex items-center justify-center">
-        <h1 className="text-4xl font-bold mb-2 mr-2">NovaMarket</h1>
-        <div className="mt-2">
-          <img 
-            src={logo} 
-            alt="Logo" 
-            className="absolute right-4 top-4 w-10 sm:w-12 md:w-14 lg:w-16 xl:w-19 max-w-xs" 
-          />
+        <div className="bg-blue-800 py-5 text-center text-white relative flex items-center justify-center">
+          <h1 className="text-4xl font-bold mb-2 mr-2">NovaMarket</h1>
+          <div className="mt-2">
+            <img 
+              src={logo} 
+              alt="Logo" 
+              className="absolute right-4 top-4 w-10 sm:w-12 md:w-14 lg:w-16 xl:w-19 max-w-xs" 
+            />
+          </div>
         </div>
-      </div>
         <IonToolbar>
           <IonTitle className="text-center">Agregar Producto</IonTitle>
         </IonToolbar>
@@ -119,15 +133,14 @@ const AddProduct = ({ onAddProduct }) => {
           </IonItem>
 
           <IonItem>
-        <IonLabel className="text-left" position="floating">Descripción del producto</IonLabel>
-        <IonTextarea
-            className="mt-2 w-[90%]" 
-            value={product.detalles}
-            onIonInput={(e) => handleInputChange(e, 'detalles')}
-            required
-        />
-        </IonItem>
-
+            <IonLabel className="text-left" position="floating">Descripción del producto</IonLabel>
+            <IonTextarea
+              className="mt-2 w-[90%]" 
+              value={product.detalles}
+              onIonInput={(e) => handleInputChange(e, 'detalles')}
+              required
+            />
+          </IonItem>
 
           <IonItem>
             <IonLabel className="text-left">Estado</IonLabel>
@@ -157,7 +170,7 @@ const AddProduct = ({ onAddProduct }) => {
             >
                 Seleccionar archivo
             </button>
-        </IonItem>
+          </IonItem>
 
           <IonButton
             expand="block"
