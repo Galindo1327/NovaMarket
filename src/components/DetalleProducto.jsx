@@ -6,22 +6,12 @@ import {
 import { useHistory, useLocation } from 'react-router-dom';
 import { collection, query, where, onSnapshot } from 'firebase/firestore'; // Suscripción en tiempo real
 import { db } from '../credentials'; // Firestore
-import logo from '../assets/logoNova.png';
-import Calificacion from '../components/Calificacion';
-
-
+import logo from '../assets/logoNova.png'; 
+import Calificacion from '../components/Calificacion'; 
 
 const DetalleProducto = () => {
-  const history = useHistory();
-  const [userData, setUserData] = useState({
-    nombre: '',
-    email: '',
-    direccion: '',
-    telefono: '',
-  });
-
   const location = useLocation();
-
+  const history = useHistory();
   const { producto } = location.state || { producto: {} };
 
   const [reviews, setReviews] = useState([]); // Estado para guardar las reviews
@@ -44,13 +34,12 @@ const DetalleProducto = () => {
         setLoading(false);
       });
 
-
       // Limpiar suscripción al desmontar el componente
       return () => unsubscribe();
     } else {
       setLoading(false);
     }
-  }, [producto],[location]);
+  }, [producto]);
 
   const handleNewRating = (newRating) => {
     setReviews(prevReviews => [...prevReviews, newRating]); // Actualizar el historial de calificaciones
@@ -81,7 +70,6 @@ const DetalleProducto = () => {
 
   return (
     <IonPage>
-
       <div className="bg-[#0070ff] py-5 text-white relative flex items-center justify-between">
         {/* Logo alineado a la izquierda */}
         <img 
@@ -109,7 +97,7 @@ const DetalleProducto = () => {
             alt={producto.nombre}
             className="w-full h-80 object-contain border-b-2 border-blue-400"
           />
-
+          
           <IonCardHeader>
             <IonCardTitle className="text-3xl text-gray-800 font-bold">{producto.nombre}</IonCardTitle>
             <IonCardSubtitle className="text-2xl text-orange-500 mt-1">{producto.precio}</IonCardSubtitle>
@@ -120,10 +108,9 @@ const DetalleProducto = () => {
             <div className="border border-gray-300 p-2 rounded bg-gray-100 text-gray-700 mb-5">
               {producto.detalles}
             </div>
-            <IonButton onClick={() => history.push('/perfil-seguir')} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Info Vendedor</IonButton>
-
-
-
+            <IonLabel className="block mb-2 text-gray-600">Vendedor:</IonLabel>
+            <IonButton onClick={() => history.push('/perfil-seguir')} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">{producto.usuario}</IonButton>
+            
           </IonCardContent>
 
           <Calificacion productoId={producto.id} isDetail={true} />
@@ -136,7 +123,7 @@ const DetalleProducto = () => {
                  // Le damos un pequeño retraso para asegurarnos que el cambio de página se complete antes de recargar
               }}
               className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700"
-            >
+              >
               Regresar
             </IonButton>
             <IonButton onClick={() => history.push('/chat', { productoId: producto.id })} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Contactar</IonButton>
