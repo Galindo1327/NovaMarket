@@ -32,7 +32,7 @@ function Login() {
         setPasswordError(false);
         auth.login(email, password);
 
-        history.push('/home');
+        history.push('/feed');
     };
 
     const handleRegisterRedirect = () => {

@@ -90,11 +90,11 @@ const Feed = () => {
     <IonPage>
       {/* Barra de navegación */}
       <IonHeader>
-        <IonToolbar className="h-20 flex items-center">
+        <IonToolbar className="h-20 flex items-center justify-between">
           <div className="bg-[#0070ff] flex items-center w-full justify-between px-4 rounded-b-lg shadow-md">
-            <div className="flex items-center space-x-0">
+            <div className="flex items-center">
               <img src={logo} alt="Logo" className="w-20 h-20" />
-              <IonTitle className="text-white text-2xl font-bold">NovaMarket</IonTitle>
+              <h1 className="text-white text-xl font-bold text-center ml-5">NovaMarket</h1>
             </div>
             <div className="flex items-center space-x-2">
               <IonButton shape="round" color="light" className="ml-2 text-1xl" onClick={() => history.push('/agregar-producto')}>
