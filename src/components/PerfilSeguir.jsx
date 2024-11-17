@@ -10,15 +10,22 @@ const Perfil = () => {
     <IonPage>
        
       <IonHeader>
-      <div className="bg-blue-800 py-5 text-center text-white relative flex items-center justify-center">
-        <h1 className="text-4xl font-bold mb-2 mr-2">NovaMarket</h1>
-        <div className="mt-2">
-          <img 
-            src={logo} 
-            alt="Logo" 
-            className="absolute right-4 top-4 w-10 sm:w-12 md:w-14 lg:w-16 xl:w-19 max-w-xs" 
-          />
-        </div>
+      <div className="bg-[#0070ff] py-5 text-white relative flex items-center justify-between">
+        {/* Logo alineado a la izquierda */}
+        <img 
+          src={logo} 
+          alt="Logo" 
+          className="w-24 p-2  sm:w-36 md:w-38 lg:w-46 xl:w-50 max-w-full ml-4" 
+        />
+        {/* Título centrado responsivamente */}
+        <h1 className="absolute ml-14 inset-0 flex items-center justify-center text-4xl sm:text-5xl lg:text-6xl font-bold text-center">
+          <a 
+            href="/feed" 
+            className="text-white hover:underline cursor-pointer"
+          >
+            NovaMarket
+          </a>
+        </h1>
       </div>
         <IonToolbar>
           <IonTitle className='text-center' >Perfil</IonTitle>
