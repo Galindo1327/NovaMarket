@@ -115,9 +115,7 @@ const DetalleProducto = () => {
             <IonButton
               onClick={() => {
                 history.goBack(); // Regresa a la página anterior (feed)
-                setTimeout(() => {
-                  window.location.reload(); // Recarga la página actual (feed) después de regresar
-                }, 100); // Le damos un pequeño retraso para asegurarnos que el cambio de página se complete antes de recargar
+                 // Le damos un pequeño retraso para asegurarnos que el cambio de página se complete antes de recargar
               }}
               className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700"
             >
