@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   IonPage,
   IonContent,
@@ -14,94 +14,105 @@ import {
   IonRow,
   IonCol,
   IonAvatar,
-} from '@ionic/react';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { useHistory } from 'react-router-dom';
-import { doc, setDoc, getDoc, getFirestore } from 'firebase/firestore';
-import { storage, db } from '../credentials'; // Importar Firestore
-import logo from '../assets/logoNova.png';
+} from "@ionic/react";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useHistory } from "react-router-dom";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { storage, db } from "../credentials"; 
+import logo from "../assets/logoNova.png";
+import { getAuth } from "firebase/auth";
 
 const Perfil = () => {
   const history = useHistory();
-  const [editing, setEditing2] = useState(false);
-  const [userData2, setUserData2] = useState({
-    nombre: '',
-    email: '',
-    direccion: '',
-    telefono: '',
+  const [editing, setEditing] = useState(false);
+  const [userData, setUserData] = useState({
+    name: "",
+    direccion: "",
+    telefono: "",
   });
 
-  const [profileImage, setProfileImage] = useState('https://via.placeholder.com/150');
-  const userId = 'user_id'; // Sustituye esto con el ID del usuario actual, por ejemplo, obtenido desde Firebase Auth.
+  const [profileImage, setProfileImage] = useState(
+    "https://via.placeholder.com/150"
+  );
+  const [newProfileImage, setNewProfileImage] = useState(null); 
 
-  // Función para obtener los datos del usuario desde Firestore
-  const fetchUserData2 = async () => {
+  const auth = getAuth();
+  const userId = auth.currentUser?.uid;
+
+
+  const fetchUserData = async () => {
+    if (!userId) {
+      console.error("No hay un usuario autenticado");
+      return;
+    }
     try {
-      const userDocRef = doc(db, 'users', userId); // Usa el userId correcto
+      const userDocRef = doc(db, "users", userId);
       const docSnap = await getDoc(userDocRef);
 
       if (docSnap.exists()) {
-        setUserData2(docSnap.data()); // Cargar los datos del usuario en el estado
+        setUserData(docSnap.data());
         if (docSnap.data().profileImage) {
-          setProfileImage(docSnap.data().profileImage); // Cargar imagen de perfil si está disponible
+          setProfileImage(docSnap.data().profileImage);
         }
       } else {
-        console.log('No se encontró el documento del usuario');
+        console.log("No se encontró el documento del usuario");
       }
     } catch (error) {
-      console.error('Error al obtener los datos del usuario:', error);
+      console.error("Error al obtener los datos del usuario:", error);
     }
   };
 
   useEffect(() => {
-    fetchUserData2();
+    fetchUserData();
+    
   }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUserData2({
-      ...userData2,
+    setUserData({
+      ...userData,
       [name]: value,
     });
   };
 
-  const handleImageChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const storageRef = ref(storage, `profileImages/${userId}_${Date.now()}_${file.name}`); // Agregar ID de usuario y timestamp al nombre del archivo
-  
-      try {
-        // Subir el archivo a Firebase Storage
-        const snapshot = await uploadBytes(storageRef, file);
-  
-        // La referencia de la imagen se obtiene de snapshot.ref
-        const downloadURL = await getDownloadURL(snapshot.metadata.ref); // Utilizamos snapshot.metadata.ref
-  
-        setProfileImage(downloadURL); // Actualiza la imagen en la vista
-        console.log("URL de la imagen:", downloadURL);
-  
-        // Guardar la URL en Firestore
-        const userDoc = doc(db, "users", userId); // Cambia "user_id" por el ID del usuario
-        await setDoc(userDoc, { profileImage: downloadURL }, { merge: true });
-  
-        console.log("Imagen guardada exitosamente en Firestore");
-      } catch (error) {
-        console.error("Error al subir la imagen:", error);
-      }
+  const handleImageChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      setNewProfileImage(e.target.files[0]);
     }
   };
-  
+
+  const uploadImage = async () => {
+    if (!newProfileImage || !userId) return;
+
+    try {
+      const imageRef = ref(storage, `profileImages/${userId}`);
+      await uploadBytes(imageRef, newProfileImage);
+
+      const downloadURL = await getDownloadURL(imageRef);
+      setProfileImage(downloadURL); 
+
+      
+      const userRef = doc(db, "users", userId);
+      await setDoc(userRef, { profileImage: downloadURL }, { merge: true });
+      console.log("Imagen de perfil actualizada.");
+    } catch (error) {
+      console.error("Error al subir la imagen:", error);
+    }
+  };
 
   const saveChanges = async () => {
     try {
-      // Guardar los cambios en Firestore
-      const userRef = doc(db, 'users', userId); // Asegúrate de usar el ID del usuario correcto
-      await setDoc(userRef, userData2, { merge: true }); // Guardar los datos de usuario
+      const userRef = doc(db, "users", userId);
+      await setDoc(userRef, userData, { merge: true });
 
-      setEditing2(false); // Cambiar el estado de edición
-      console.log('Cambios guardados:', userData2);
+      setEditing(false);
+      console.log("Cambios guardados:", userData);
     } catch (error) {
-      console.error('Error guardando los cambios: ', error);
+      console.error("Error guardando los cambios: ", error);
+    }
+
+    if (newProfileImage) {
+      await uploadImage(); 
     }
   };
 
@@ -126,18 +137,18 @@ const Perfil = () => {
         <IonGrid>
           <IonRow className="ion-justify-content-center ion-padding">
             <IonCol size="12" className="ion-text-center">
-              <IonAvatar style={{ margin: '0 auto', width: '120px', height: '120px' }}>
+              <IonAvatar
+                style={{ margin: "0 auto", width: "120px", height: "120px" }}
+              >
                 <img src={profileImage} alt="Avatar del usuario" />
               </IonAvatar>
               {editing && (
-                <div style={{ marginTop: '10px' }}>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageChange} // Usa el método actualizado
-                    style={{ display: 'block', margin: '0 auto' }}
-                  />
-                </div>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  style={{ marginTop: "10px" }}
+                />
               )}
             </IonCol>
           </IonRow>
@@ -147,38 +158,26 @@ const Perfil = () => {
               <IonLabel position="stacked">Nombre</IonLabel>
               {editing ? (
                 <IonInput
-                  value={userData2.nombre}
-                  name="nombre"
+                  value={userData.name}
+                  name="name"
                   onIonInput={handleInputChange}
                 />
               ) : (
-                <p>{userData2.nombre}</p>
+                <p>{userData.name}</p>
               )}
             </IonItem>
 
-            <IonItem>
-              <IonLabel position="stacked">Correo electrónico</IonLabel>
-              {editing ? (
-                <IonInput
-                  value={userData2.email}
-                  name="email"
-                  onIonInput={handleInputChange}
-                />
-              ) : (
-                <p>{userData2.email}</p>
-              )}
-            </IonItem>
-
+            
             <IonItem>
               <IonLabel position="stacked">Ciudad</IonLabel>
               {editing ? (
                 <IonInput
-                  value={userData2.direccion}
+                  value={userData.direccion}
                   name="direccion"
                   onIonInput={handleInputChange}
                 />
               ) : (
-                <p>{userData2.direccion}</p>
+                <p>{userData.direccion}</p>
               )}
             </IonItem>
 
@@ -186,12 +185,12 @@ const Perfil = () => {
               <IonLabel position="stacked">Teléfono</IonLabel>
               {editing ? (
                 <IonInput
-                  value={userData2.telefono}
+                  value={userData.telefono}
                   name="telefono"
                   onIonInput={handleInputChange}
                 />
               ) : (
-                <p>{userData2.telefono}</p>
+                <p>{userData.telefono}</p>
               )}
             </IonItem>
           </IonList>
@@ -201,7 +200,9 @@ const Perfil = () => {
               {editing ? (
                 <IonButton onClick={saveChanges}>Guardar Cambios</IonButton>
               ) : (
-                <IonButton onClick={() => setEditing2(true)}>Editar Perfil</IonButton>
+                <IonButton onClick={() => setEditing(true)}>
+                  Editar Perfil
+                </IonButton>
               )}
             </IonCol>
           </IonRow>

@@ -12,30 +12,33 @@ import {
   IonIcon,
   IonButton,
 } from '@ionic/react';
-import { mailOutline, locationOutline, callOutline, chatbubbleOutline, arrowBackOutline, personAddOutline } from 'ionicons/icons'; // Importa los íconos necesarios
+import { mailOutline, locationOutline, callOutline, chatbubbleOutline, arrowBackOutline, personAddOutline } from 'ionicons/icons';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../credentials';
 import logo from '../assets/logoNova.png';
+import { getAuth } from "firebase/auth";
 
 const Perfil = () => {
   const [profileImage, setProfileImage] = useState('https://via.placeholder.com/150');
-  const [userData2, setUserData2] = useState({
-    nombre: '',
-    email: '',
+  const [userData, setUserData] = useState({
+    name: '',
     direccion: '',
     telefono: '',
   });
-  const userId = 'perfilUsuario'; // Cambiar por el ID real del usuario
 
-  const fetchUserData2 = async () => {
+  const auth = getAuth();
+  const userId = "perfilUsuario";
+
+  const fetchUserData = async () => {
     try {
       const userDocRef = doc(db, 'usuarios', userId);
       const docSnap = await getDoc(userDocRef);
 
       if (docSnap.exists()) {
-        setUserData2(docSnap.data());
-        if (docSnap.data().profileImage) {
-          setProfileImage(docSnap.data().profileImage);
+        const userData = docSnap.data();
+        setUserData(userData);
+        if (userData.profileImage) {
+          setProfileImage(userData.profileImage);
         }
       } else {
         console.log('No se encontró el documento del usuario');
@@ -45,9 +48,15 @@ const Perfil = () => {
     }
   };
 
+  
   useEffect(() => {
-    fetchUserData2();
-  }, []);
+    if (userId) {
+      fetchUserData();
+
+    } else {
+      console.log('El usuario no está autenticado.');
+    }
+  }, [userId]); 
 
   return (
     <IonPage>
@@ -77,28 +86,20 @@ const Perfil = () => {
               <br />
               <br />
               <br />
-              
-              <h2 className="mt-2">{userData2.nombre}</h2>
+
+              <h2 className="mt-2">{userData.name}</h2>
               <p>⭐⭐⭐⭐⭐</p>
             </IonCol>
           </IonRow>
           <IonRow className="ion-padding">
-            <IonCol size="12" className="ion-text-left"> {/* Justificación a la izquierda */}
+            <IonCol size="12" className="ion-text-left">
               <IonGrid>
-                <IonRow className="ion-align-items-center ion-padding-vertical">
-                  <IonCol size="auto">
-                    <IonIcon icon={mailOutline} size="large" />
-                  </IonCol>
-                  <IonCol>
-                    <h2 className="ion-no-margin">{userData2.email}</h2>
-                  </IonCol>
-                </IonRow>
                 <IonRow className="ion-align-items-center ion-padding-vertical">
                   <IonCol size="auto">
                     <IonIcon icon={locationOutline} size="large" />
                   </IonCol>
                   <IonCol>
-                    <h2 className="ion-no-margin">{userData2.direccion}</h2>
+                    <h2 className="ion-no-margin">{userData.direccion}</h2>
                   </IonCol>
                 </IonRow>
                 <IonRow className="ion-align-items-center ion-padding-vertical">
@@ -106,13 +107,13 @@ const Perfil = () => {
                     <IonIcon icon={callOutline} size="large" />
                   </IonCol>
                   <IonCol>
-                    <h2 className="ion-no-margin">{userData2.telefono}</h2>
+                    <h2 className="ion-no-margin">{userData.telefono}</h2>
                   </IonCol>
                 </IonRow>
               </IonGrid>
             </IonCol>
           </IonRow>
-          <IonRow className="ion-justify-content-around ion-padding-top"> {/* Botones alineados */}
+          <IonRow className="ion-justify-content-around ion-padding-top">
             <IonCol size="auto">
               <IonButton color="primary">
                 <IonIcon icon={chatbubbleOutline} slot="start" />
