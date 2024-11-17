@@ -16,6 +16,7 @@ const DetalleProducto = () => {
 
   const [reviews, setReviews] = useState([]); // Estado para guardar las reviews
   const [averageRating, setAverageRating] = useState(0); // Estado para la calificación promedio
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
@@ -30,12 +31,15 @@ const DetalleProducto = () => {
         const totalRating = fetchedReviews.reduce((acc, review) => acc + review.rating, 0);
         const average = fetchedReviews.length > 0 ? totalRating / fetchedReviews.length : 0;
         setAverageRating(average);
+        setLoading(false);
       });
 
       // Limpiar suscripción al desmontar el componente
       return () => unsubscribe();
+    } else {
+      setLoading(false);
     }
-  }, [producto.id]);
+  }, [producto]);
 
   const handleNewRating = (newRating) => {
     setReviews(prevReviews => [...prevReviews, newRating]); // Actualizar el historial de calificaciones
@@ -44,7 +48,11 @@ const DetalleProducto = () => {
     setAverageRating(average); // Actualizar el promedio
   };
 
-  if (!producto) {
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (!producto || !producto.id) {
     return <div>No se encontró el producto.</div>;
   }
 
@@ -118,7 +126,7 @@ const DetalleProducto = () => {
               >
               Regresar
             </IonButton>
-            <IonButton onClick={() => history.push('/chat')} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Contactar</IonButton>
+            <IonButton onClick={() => history.push('/chat', { productoId: producto.id })} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Contactar</IonButton>
           </div>
         </IonCard>
       </IonContent>
