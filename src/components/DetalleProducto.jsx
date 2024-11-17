@@ -92,7 +92,7 @@ const DetalleProducto = () => {
               {producto.detalles}
             </div>
             <IonLabel className="block mb-2 text-gray-600">Vendedor:</IonLabel>
-            <IonButton onClick={() => history.push('/perfil-seguir')} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Juan Carlos</IonButton>
+            <IonButton onClick={() => history.push('/perfil-seguir')} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">{producto.usuario}</IonButton>
             
           </IonCardContent>
 
