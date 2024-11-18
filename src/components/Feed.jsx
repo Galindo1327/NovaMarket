@@ -3,7 +3,7 @@ import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonP
 import { searchOutline, funnelOutline, closeCircleOutline, personOutline } from 'ionicons/icons';  // Añadir icono de perfil
 import { useHistory } from 'react-router-dom';
 import Calificacion from './Calificacion';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 import { db } from '../credentials';
 import carro from '../assets/carro.jpg';
 import estufa from '../assets/estufa.avif';
