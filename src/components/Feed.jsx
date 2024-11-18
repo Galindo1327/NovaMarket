@@ -28,24 +28,24 @@ import logo from '../assets/logoNova.png';
 const Feed = () => {
   const history = useHistory();
   const productos = [
-    { id: 1, nombre: 'CARRO', precio: '$23.000.000', tipo: 'vehículo', img: carro },
-    { id: 2, nombre: 'ESTUFA', precio: '$270.000', tipo: 'electrodoméstico', img: estufa },
-    { id: 3, nombre: 'MT-09', precio: '$25.000.000', tipo: 'vehículo', img: mt09 },
-    { id: 4, nombre: 'Chicken Ramen', precio: '$20.950', tipo: 'comida', img: ramen },
-    { id: 5, nombre: 'XTZ 250', precio: '$17.750.000', tipo: 'vehículo', img: xtz },
-    { id: 6, nombre: 'CICLA CAMBIOS', precio: '$225.000', tipo: 'vehículo', img: bike },
-    { id: 13, nombre: 'Refrigerador Samsung RF28R7551', tipo: 'electrodoméstico', precio: '$4.299.900', img: nevera },
-    { id: 14, nombre: 'MacBook Pro 16" M2 Max', tipo: 'tecnología', precio: '$9.999.000', img: macbook },
-    { id: 15, nombre: 'Ducati Panigale V4 S', tipo: 'vehículo', precio: '$129.900.000', img: ducati },
-    { id: 16, nombre: 'Smart TV Samsung Neo QLED 75"', tipo: 'tecnología', precio: '$7.499.900', img: tv },
-    { id: 17, nombre: 'Bicicleta Specialized S-Works Tarmac SL7', tipo: 'vehículo', precio: '$35.900.000', img: bicicleta },
-    { id: 18, nombre: 'Lavadora-Secadora LG WD22VV2S29B', tipo: 'electrodoméstico', precio: '$3.799.900', img: lavadora },
-    { id: 19, nombre: 'iPhone 15 Pro Max 1TB', tipo: 'tecnología', precio: '$7.999.000', img: iphone },
-    { id: 20, nombre: 'BMW R 1250 GS Adventure', tipo: 'vehículo', precio: '$118.900.000', img: bmwMoto },
-    { id: 21, nombre: 'Horno Eléctrico Whirlpool WOS51EC7HS', tipo: 'electrodoméstico', precio: '$2.899.900', img: horno },
-    { id: 22, nombre: 'Cámara Sony Alpha A7R V', tipo: 'tecnología', precio: '$6.999.000', img: sony },
-    { id: 23, nombre: 'Cámara Nikon D5300', tipo: 'tecnología', precio: '$6.500.000', img: nikon },
-    { id: 24, nombre: 'Samsung S24 Plus 1Tb', tipo: 'tecnología', precio: '$9.950.000', img: s24 }
+    // { id: 1, nombre: 'CARRO', precio: '$23.000.000', tipo: 'vehículo', img: carro },
+    // { id: 2, nombre: 'ESTUFA', precio: '$270.000', tipo: 'electrodoméstico', img: estufa },
+    // { id: 3, nombre: 'MT-09', precio: '$25.000.000', tipo: 'vehículo', img: mt09 },
+    // { id: 4, nombre: 'Chicken Ramen', precio: '$20.950', tipo: 'comida', img: ramen },
+    // { id: 5, nombre: 'XTZ 250', precio: '$17.750.000', tipo: 'vehículo', img: xtz },
+    // { id: 6, nombre: 'CICLA CAMBIOS', precio: '$225.000', tipo: 'vehículo', img: bike },
+    // { id: 13, nombre: 'Refrigerador Samsung RF28R7551', tipo: 'electrodoméstico', precio: '$4.299.900', img: nevera },
+    // { id: 14, nombre: 'MacBook Pro 16" M2 Max', tipo: 'tecnología', precio: '$9.999.000', img: macbook },
+    // { id: 15, nombre: 'Ducati Panigale V4 S', tipo: 'vehículo', precio: '$129.900.000', img: ducati },
+    // { id: 16, nombre: 'Smart TV Samsung Neo QLED 75"', tipo: 'tecnología', precio: '$7.499.900', img: tv },
+    // { id: 17, nombre: 'Bicicleta Specialized S-Works Tarmac SL7', tipo: 'vehículo', precio: '$35.900.000', img: bicicleta },
+    // { id: 18, nombre: 'Lavadora-Secadora LG WD22VV2S29B', tipo: 'electrodoméstico', precio: '$3.799.900', img: lavadora },
+    // { id: 19, nombre: 'iPhone 15 Pro Max 1TB', tipo: 'tecnología', precio: '$7.999.000', img: iphone },
+    // { id: 20, nombre: 'BMW R 1250 GS Adventure', tipo: 'vehículo', precio: '$118.900.000', img: bmwMoto },
+    // { id: 21, nombre: 'Horno Eléctrico Whirlpool WOS51EC7HS', tipo: 'electrodoméstico', precio: '$2.899.900', img: horno },
+    // { id: 22, nombre: 'Cámara Sony Alpha A7R V', tipo: 'tecnología', precio: '$6.999.000', img: sony },
+    // { id: 23, nombre: 'Cámara Nikon D5300', tipo: 'tecnología', precio: '$6.500.000', img: nikon },
+    // { id: 24, nombre: 'Samsung S24 Plus 1Tb', tipo: 'tecnología', precio: '$9.950.000', img: s24 }
   ];
 
   const [firebaseProductos, setFirebaseProductos] = useState([]);
