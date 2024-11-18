@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonContent, IonInput, IonButton, IonList, IonItem, IonLabel, IonPage, IonHeader, IonToolbar, IonFooter } from '@ionic/react';
 import { collection, addDoc, query, onSnapshot, orderBy, where } from 'firebase/firestore';
-import { db, auth } from '../credentials'; // Importa Firestore y auth
+import { db, auth } from '../credentials';
 import { useHistory } from "react-router-dom";
 
 function Chat({ productoId }) {

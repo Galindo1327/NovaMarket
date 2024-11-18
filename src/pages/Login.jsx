@@ -62,10 +62,10 @@ function Login() {
                             onChange={(e) => setEmail(e.target.value)}
                             type="email"
                             InputProps={{
-                                style: { backgroundColor: '#2a2a2a', color: 'white' }, // Asegura que el color del texto sea blanco
+                                style: { backgroundColor: '#2a2a2a', color: 'white' },
                             }}
                             InputLabelProps={{
-                                style: { color: '#bbbbbb' }, // Color del label
+                                style: { color: '#bbbbbb' },
                             }}
                         />
                         <TextField
@@ -77,10 +77,10 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)}
                             type="password"
                             InputProps={{
-                                style: { backgroundColor: '#2a2a2a', color: 'white' }, // Asegura que el color del texto sea blanco
+                                style: { backgroundColor: '#2a2a2a', color: 'white' },
                             }}
                             InputLabelProps={{
-                                style: { color: '#bbbbbb' }, // Color del label
+                                style: { color: '#bbbbbb' }, 
                             }}
                         />
 

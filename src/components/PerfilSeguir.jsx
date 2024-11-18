@@ -46,13 +46,11 @@ const Perfil = () => {
     <IonPage>
       <IonHeader>
         <div className="bg-[#0070ff] py-5 text-white relative flex items-center justify-between">
-          {/* Logo alineado a la izquierda */}
           <img 
             src={logo} 
             alt="Logo" 
             className="w-24 p-2  sm:w-36 md:w-38 lg:w-46 xl:w-50 max-w-full ml-4" 
           />
-          {/* Título centrado responsivamente */}
           <h1 className="absolute ml-14 inset-0 flex items-center justify-center text-4xl sm:text-5xl lg:text-6xl font-bold text-center">
             <a 
               href="/feed" 

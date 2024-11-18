@@ -96,8 +96,6 @@ const AddProduct = ({ onAddProduct }) => {
       </IonHeader>
       <IonContent className="ion-padding">
         <div className="max-w-md mx-auto">
-          {/* Campos del formulario */}
-          
           <IonItem>
             <IonLabel className="text-left" position="floating">Nombre del producto</IonLabel>
             <IonInput
