@@ -28,24 +28,24 @@ import logo from '../assets/logoNova.png';
 const Feed = () => {
   const history = useHistory();
   const productos = [
-    { id: 1, nombre: 'CARRO', precio: '$23.000.000', tipo: 'vehículo', img: carro },
-    { id: 2, nombre: 'ESTUFA', precio: '$270.000', tipo: 'electrodoméstico', img: estufa },
-    { id: 3, nombre: 'MT-09', precio: '$25.000.000', tipo: 'vehículo', img: mt09 },
-    { id: 4, nombre: 'Chicken Ramen', precio: '$20.950', tipo: 'comida', img: ramen },
-    { id: 5, nombre: 'XTZ 250', precio: '$17.750.000', tipo: 'vehículo', img: xtz },
-    { id: 6, nombre: 'CICLA CAMBIOS', precio: '$225.000', tipo: 'vehículo', img: bike },
-    { id: 13, nombre: 'Refrigerador Samsung RF28R7551', tipo: 'electrodoméstico', precio: '$4.299.900', img: nevera },
-    { id: 14, nombre: 'MacBook Pro 16" M2 Max', tipo: 'tecnología', precio: '$9.999.000', img: macbook },
-    { id: 15, nombre: 'Ducati Panigale V4 S', tipo: 'vehículo', precio: '$129.900.000', img: ducati },
-    { id: 16, nombre: 'Smart TV Samsung Neo QLED 75"', tipo: 'tecnología', precio: '$7.499.900', img: tv },
-    { id: 17, nombre: 'Bicicleta Specialized S-Works Tarmac SL7', tipo: 'vehículo', precio: '$35.900.000', img: bicicleta },
-    { id: 18, nombre: 'Lavadora-Secadora LG WD22VV2S29B', tipo: 'electrodoméstico', precio: '$3.799.900', img: lavadora },
-    { id: 19, nombre: 'iPhone 15 Pro Max 1TB', tipo: 'tecnología', precio: '$7.999.000', img: iphone },
-    { id: 20, nombre: 'BMW R 1250 GS Adventure', tipo: 'vehículo', precio: '$118.900.000', img: bmwMoto },
-    { id: 21, nombre: 'Horno Eléctrico Whirlpool WOS51EC7HS', tipo: 'electrodoméstico', precio: '$2.899.900', img: horno },
-    { id: 22, nombre: 'Cámara Sony Alpha A7R V', tipo: 'tecnología', precio: '$6.999.000', img: sony },
-    { id: 23, nombre: 'Cámara Nikon D5300', tipo: 'tecnología', precio: '$6.500.000', img: nikon },
-    { id: 24, nombre: 'Samsung S24 Plus 1Tb', tipo: 'tecnología', precio: '$9.950.000', img: s24 }
+    // { id: 1, nombre: 'CARRO', precio: '$23.000.000', tipo: 'vehículo', img: carro },
+    // { id: 2, nombre: 'ESTUFA', precio: '$270.000', tipo: 'electrodoméstico', img: estufa },
+    // { id: 3, nombre: 'MT-09', precio: '$25.000.000', tipo: 'vehículo', img: mt09 },
+    // { id: 4, nombre: 'Chicken Ramen', precio: '$20.950', tipo: 'comida', img: ramen },
+    // { id: 5, nombre: 'XTZ 250', precio: '$17.750.000', tipo: 'vehículo', img: xtz },
+    // { id: 6, nombre: 'CICLA CAMBIOS', precio: '$225.000', tipo: 'vehículo', img: bike },
+    // { id: 13, nombre: 'Refrigerador Samsung RF28R7551', tipo: 'electrodoméstico', precio: '$4.299.900', img: nevera },
+    // { id: 14, nombre: 'MacBook Pro 16" M2 Max', tipo: 'tecnología', precio: '$9.999.000', img: macbook },
+    // { id: 15, nombre: 'Ducati Panigale V4 S', tipo: 'vehículo', precio: '$129.900.000', img: ducati },
+    // { id: 16, nombre: 'Smart TV Samsung Neo QLED 75"', tipo: 'tecnología', precio: '$7.499.900', img: tv },
+    // { id: 17, nombre: 'Bicicleta Specialized S-Works Tarmac SL7', tipo: 'vehículo', precio: '$35.900.000', img: bicicleta },
+    // { id: 18, nombre: 'Lavadora-Secadora LG WD22VV2S29B', tipo: 'electrodoméstico', precio: '$3.799.900', img: lavadora },
+    // { id: 19, nombre: 'iPhone 15 Pro Max 1TB', tipo: 'tecnología', precio: '$7.999.000', img: iphone },
+    // { id: 20, nombre: 'BMW R 1250 GS Adventure', tipo: 'vehículo', precio: '$118.900.000', img: bmwMoto },
+    // { id: 21, nombre: 'Horno Eléctrico Whirlpool WOS51EC7HS', tipo: 'electrodoméstico', precio: '$2.899.900', img: horno },
+    // { id: 22, nombre: 'Cámara Sony Alpha A7R V', tipo: 'tecnología', precio: '$6.999.000', img: sony },
+    // { id: 23, nombre: 'Cámara Nikon D5300', tipo: 'tecnología', precio: '$6.500.000', img: nikon },
+    // { id: 24, nombre: 'Samsung S24 Plus 1Tb', tipo: 'tecnología', precio: '$9.950.000', img: s24 }
   ];
 
   const [firebaseProductos, setFirebaseProductos] = useState([]);
@@ -60,18 +60,13 @@ const Feed = () => {
         const productosFirebase = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-          // Mapea `categoria` a `tipo` para que el filtro funcione
-          tipo: doc.data().categoria || 'otros', // Usa 'otros' como predeterminado si no hay categoría
+          tipo: doc.data().categoria || 'otros',
         }));
         setFirebaseProductos(productosFirebase);
       } catch (error) {
         console.error('Error al obtener productos:', error);
       }
     };
-  
-
-  
-
     fetchProductos();
   }, []);
 
@@ -88,20 +83,18 @@ const Feed = () => {
 
   return (
     <IonPage>
-      {/* Barra de navegación */}
       <IonHeader>
-        <IonToolbar className="h-20 flex items-center">
+        <IonToolbar className="h-20 flex items-center justify-between">
           <div className="bg-[#0070ff] flex items-center w-full justify-between px-4 rounded-b-lg shadow-md">
-            <div className="flex items-center space-x-0">
+            <div className="flex items-center">
               <img src={logo} alt="Logo" className="w-20 h-20" />
-              <IonTitle className="text-white text-2xl font-bold">NovaMarket</IonTitle>
+              <h1 className="text-white text-xl font-bold text-center ml-5">NovaMarket</h1>
             </div>
             <div className="flex items-center space-x-2">
               <IonButton shape="round" color="light" className="ml-2 text-1xl" onClick={() => history.push('/agregar-producto')}>
                 +
               </IonButton>
 
-              {/* Botón para redirigir al perfil */}
               <IonButton shape="round" color="light" onClick={() => history.push('/perfil')}>
                 <IonIcon icon={personOutline} />
               </IonButton>
@@ -110,14 +103,11 @@ const Feed = () => {
         </IonToolbar>
       </IonHeader>
 
-      {/* Contenido del Feed */}
       <IonContent className="ion-padding bg-[#0070ff]">
 
-        {/* Overlay oscuro */}
         {showPopover && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-10"></div>
         )}
-        {/* Barra de búsqueda */}
         <div className="flex justify-center items-center mb-4 ">
           <IonInput
             placeholder="Busca tu producto"
@@ -129,12 +119,10 @@ const Feed = () => {
             <IonIcon icon={searchOutline} />
           </IonButton>
 
-          {/* Botón para mostrar el popover de filtros */}
           <IonButton shape="round" color="light" className="ml-2" style={{ marginTop: "10px" }} onClick={() => setShowPopover(true)}>
             <IonIcon icon={funnelOutline} />
           </IonButton>
 
-          {/* Popover con las opciones de filtrado */}
           <IonPopover isOpen={showPopover} onDidDismiss={() => setShowPopover(false)}  className="rounded-lg shadow-lg transform -translate-y-60">
             <IonList>
               <IonItem button onClick={() => { setFiltro(''); setShowPopover(false); }}>Todos</IonItem>
@@ -150,7 +138,6 @@ const Feed = () => {
           </IonPopover>
         </div>
 
-        {/* Mostrar el filtro activo */}
         {filtro && (
           <div className="flex items-center mb-4">
             <IonChip color="tertiary text-black">
@@ -160,7 +147,6 @@ const Feed = () => {
           </div>
         )}
 
-        {/* Grid de productos */}
         <IonGrid>
           <IonRow className="flex flex-wrap">
             {productosFiltrados.length > 0 ? (
@@ -184,7 +170,6 @@ const Feed = () => {
                         </IonCardSubtitle>
                       </IonCardHeader>
 
-                      {/* Mostrar solo las estrellas y el número de comentarios */}
                       <Calificacion productoId={producto.id} isDetail={false} className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.5)]"/>
 
                     </IonCard>

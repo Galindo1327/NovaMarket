@@ -4,8 +4,8 @@ import {
   IonCardContent, IonButton, IonPage, IonContent, IonLabel
 } from '@ionic/react';
 import { useHistory, useLocation } from 'react-router-dom';
-import { collection, query, where, onSnapshot } from 'firebase/firestore'; // Suscripción en tiempo real
-import { db } from '../credentials'; // Firestore
+import { collection, query, where, onSnapshot } from 'firebase/firestore';
+import { db } from '../credentials'; 
 import logo from '../assets/logoNova.png'; 
 import Calificacion from '../components/Calificacion'; 
 
@@ -14,37 +14,42 @@ const DetalleProducto = () => {
   const history = useHistory();
   const { producto } = location.state || { producto: {} };
 
-  const [reviews, setReviews] = useState([]); // Estado para guardar las reviews
-  const [averageRating, setAverageRating] = useState(0); // Estado para la calificación promedio
+  const [reviews, setReviews] = useState([]); 
+  const [averageRating, setAverageRating] = useState(0); 
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
     if (producto && producto.id) {
-      // Escuchar cambios en tiempo real en las calificaciones
       const q = query(collection(db, 'calificaciones'), where('productoId', '==', producto.id));
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const fetchedReviews = querySnapshot.docs.map(doc => doc.data());
         setReviews(fetchedReviews);
 
-        // Calcular el promedio de calificaciones
         const totalRating = fetchedReviews.reduce((acc, review) => acc + review.rating, 0);
         const average = fetchedReviews.length > 0 ? totalRating / fetchedReviews.length : 0;
         setAverageRating(average);
+        setLoading(false);
       });
 
-      // Limpiar suscripción al desmontar el componente
       return () => unsubscribe();
+    } else {
+      setLoading(false);
     }
-  }, [producto.id]);
+  }, [producto]);
 
   const handleNewRating = (newRating) => {
-    setReviews(prevReviews => [...prevReviews, newRating]); // Actualizar el historial de calificaciones
+    setReviews(prevReviews => [...prevReviews, newRating]);
     const totalRating = [...reviews, newRating].reduce((acc, review) => acc + review.rating, 0);
     const average = totalRating / ([...reviews, newRating].length || 1);
-    setAverageRating(average); // Actualizar el promedio
+    setAverageRating(average);
   };
 
-  if (!producto) {
+  if (loading) {
+    return <div>Cargando...</div>;
+  }
+
+  if (!producto || !producto.id) {
     return <div>No se encontró el producto.</div>;
   }
 
@@ -62,14 +67,12 @@ const DetalleProducto = () => {
 
   return (
     <IonPage>
-      <div className="bg-[#0070ff] py-5 text-white relative flex items-center justify-between">
-        {/* Logo alineado a la izquierda */}
+      <div className="bg-[#0070ff] py-5 text-white relative flex items-center justify-between rounded-b-lg">
         <img 
           src={logo} 
           alt="Logo" 
-          className="w-24 p-2  sm:w-36 md:w-38 lg:w-46 xl:w-50 max-w-full ml-4" 
+          className="w-20 p-2 sm:w-36 md:w-38 lg:w-46 xl:w-50 max-w-full ml-4" 
         />
-        {/* Título centrado responsivamente */}
         <h1 className="absolute ml-14 inset-0 flex items-center justify-center text-4xl sm:text-5xl lg:text-6xl font-bold text-center">
           <a 
             href="/feed" 
@@ -101,24 +104,22 @@ const DetalleProducto = () => {
               {producto.detalles}
             </div>
             <IonLabel className="block mb-2 text-gray-600">Vendedor:</IonLabel>
-            <IonButton onClick={() => history.push('/perfil-seguir')} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Juan Carlos</IonButton>
+            <IonButton onClick={() => history.push('/perfil-seguir', { usuarioId: producto.usuarioID })} className="w-1/2 text-white hover:bg-blue-700">{producto.usuario}</IonButton>
             
           </IonCardContent>
 
           <Calificacion productoId={producto.id} isDetail={true} />
 
-
           <div className="flex justify-around mb-5">
             <IonButton
               onClick={() => {
-                history.goBack(); // Regresa a la página anterior (feed)
-                 // Le damos un pequeño retraso para asegurarnos que el cambio de página se complete antes de recargar
+                history.goBack();
               }}
-              className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700"
+              className="w-1/2 text-white hover:bg-blue-700"
               >
               Regresar
             </IonButton>
-            <IonButton onClick={() => history.push('/chat')} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Contactar</IonButton>
+            <IonButton onClick={() => history.push('/chat', { productoId: producto.id })} className="w-1/2 text-white hover:bg-blue-700">Contactar</IonButton>
           </div>
         </IonCard>
       </IonContent>

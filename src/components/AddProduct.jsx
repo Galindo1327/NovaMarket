@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton, IonItem, IonLabel, IonSelect, IonSelectOption, IonTextarea } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { storage, db } from '../credentials';
+import { storage, db, auth } from '../credentials';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { collection, addDoc } from 'firebase/firestore';
 import logo from '../assets/logoNova.png'; 
+import { useAuth } from "../context/authContext"; 
 
 const AddProduct = ({ onAddProduct }) => {
   const history = useHistory();
+  const { getUserInfo } = useAuth();
   const [product, setProduct] = useState({
     nombre: '',
     precio: '',
@@ -18,6 +20,20 @@ const AddProduct = ({ onAddProduct }) => {
   });
 
   const [uploading, setUploading] = useState(false);
+  const [usuario, setUsuario] = useState("");
+  const [usuarioID, setUsuarioID] = useState("");
+
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      const user = auth.currentUser;
+      if (user) {
+        setUsuario(user.displayName);
+        setUsuarioID(user.uid);
+      }
+    };
+
+    fetchUserInfo();
+  }, []);
 
   const handleInputChange = (e, field) => {
     setProduct({ ...product, [field]: e.target.value });
@@ -44,6 +60,8 @@ const AddProduct = ({ onAddProduct }) => {
         detalles: product.detalles,
         estado: product.estado,
         img: imgUrl,
+        usuario: usuario,
+        usuarioID: usuarioID,
       };
   
       await addDoc(collection(db, 'DetalleProducto'), newProduct);
@@ -61,30 +79,32 @@ const AddProduct = ({ onAddProduct }) => {
 
   return (
     <IonPage>
-      
       <IonHeader>
-      <div className="bg-blue-800 py-5 text-center text-white relative flex items-center justify-center">
-        <h1 className="text-4xl font-bold mb-2 mr-2">NovaMarket</h1>
-        <div className="mt-2">
+      <div className="bg-[#0070ff] py-5 text-white relative flex items-center justify-between rounded-b-lg">
           <img 
             src={logo} 
             alt="Logo" 
-            className="absolute right-4 top-4 w-10 sm:w-12 md:w-14 lg:w-16 xl:w-19 max-w-xs" 
+            className="w-24 p-2  sm:w-36 md:w-38 lg:w-46 xl:w-50 max-w-full ml-4" 
           />
+          <h1 className="absolute ml-14 inset-0 flex items-center justify-center text-4xl sm:text-5xl lg:text-6xl font-bold text-center">
+            <a 
+              href="/feed" 
+              className="text-white hover:underline cursor-pointer"
+            >
+              NovaMarket
+            </a>
+          </h1>
         </div>
-      </div>
         <IonToolbar>
           <IonTitle className="text-center">Agregar Producto</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
-        <div className="max-w-md mx-auto">
-          {/* Campos del formulario */}
-          
+      <IonContent className="ion-padding flex justify-center">
+        <div className="max-w-md mx-auto flex justify-center flex-col">
           <IonItem>
             <IonLabel className="text-left" position="floating">Nombre del producto</IonLabel>
             <IonInput
-              className="mt-2"
+              className="mt-4"
               value={product.nombre}
               onIonInput={(e) => handleInputChange(e, 'nombre')}
               required
@@ -94,7 +114,7 @@ const AddProduct = ({ onAddProduct }) => {
           <IonItem>
             <IonLabel className="text-left" position="floating">Precio</IonLabel>
             <IonInput
-              className="mt-2" 
+              className="mt-4" 
               type="number"
               value={product.precio}
               onIonInput={(e) => handleInputChange(e, 'precio')}
@@ -119,18 +139,17 @@ const AddProduct = ({ onAddProduct }) => {
           </IonItem>
 
           <IonItem>
-        <IonLabel className="text-left" position="floating">Descripción del producto</IonLabel>
-        <IonTextarea
-            className="mt-2 w-[90%]" 
-            value={product.detalles}
-            onIonInput={(e) => handleInputChange(e, 'detalles')}
-            required
-        />
-        </IonItem>
-
+            <IonLabel className="text-left" position="floating">Descripción del producto</IonLabel>
+            <IonTextarea
+              className="mt-4" 
+              value={product.detalles}
+              onIonInput={(e) => handleInputChange(e, 'detalles')}
+              required
+            />
+          </IonItem>
 
           <IonItem>
-            <IonLabel className="text-left">Estado</IonLabel>
+            <IonLabel className="text-left mt-4">Estado</IonLabel>
             <IonSelect
               value={product.estado}
               onIonChange={(e) => setProduct({ ...product, estado: e.detail.value })}
@@ -157,17 +176,19 @@ const AddProduct = ({ onAddProduct }) => {
             >
                 Seleccionar archivo
             </button>
-        </IonItem>
+          </IonItem>
 
-          <IonButton
-            expand="block"
-            onClick={handleSubmit}
-            className="mt-4 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700 rounded p-1"
-            disabled={uploading}  
-          >
-            {uploading ? 'Subiendo...' : 'Subir Producto'}
-          </IonButton>
-          <IonButton expand="block" onClick={() => history.goBack()} className="mt-4 p-1 rounded mx-auto block  text-center bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Regresar</IonButton>
+          <div className='flex flex-col justify-center items-center mt-9'>
+            <IonButton
+              expand="block"
+              onClick={handleSubmit}
+              className="w-1/2 text-white hover:bg-blue-700"
+              disabled={uploading}  
+            >
+              {uploading ? 'Subiendo...' : 'Subir Producto'}
+            </IonButton>
+            <IonButton expand="block" onClick={() => history.goBack()} className="w-1/2 text-white hover:bg-blue-700">Regresar</IonButton>
+          </div>
         </div>
       </IonContent>
     </IonPage>

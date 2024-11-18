@@ -1,67 +1,114 @@
-import React from 'react';
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonAvatar, IonButton, IonItem, IonLabel, IonInput, IonIcon } from '@ionic/react';
-import { mailOutline, locationOutline, chatbubbleEllipsesOutline } from 'ionicons/icons';
+import React, { useState, useEffect } from 'react';
+import {
+  IonPage,
+  IonContent,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonAvatar,
+  IonIcon,
+  IonButton,
+} from '@ionic/react';
+import { mailOutline, locationOutline, callOutline, chatbubbleOutline, arrowBackOutline, personAddOutline } from 'ionicons/icons';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../credentials';
 import logo from '../assets/logoNova.png';
-import { useHistory } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const Perfil = () => {
-  const history = useHistory();
+  const location = useLocation();
+  const { usuarioId } = location.state || {};
+  const [userInfo, setUserInfo] = useState(null);
+
+  useEffect(() => {
+    console.log("usuarioId:", usuarioId)
+    if (usuarioId) {
+      const fetchUser = async () => {
+        const userDoc = await getDoc(doc(db, 'users', usuarioId));
+        if (userDoc.exists()) {
+          setUserInfo(userDoc.data());
+        } else {
+          console.log("No se encontró el usuario.");
+        }
+      };
+      fetchUser();
+    }
+  }, [usuarioId]);
+
+  if (!userInfo) {
+    return <div>Cargando perfil...</div>;
+  }
+
   return (
     <IonPage>
-       
       <IonHeader>
-      <div className="bg-[#0070ff] py-5 text-white relative flex items-center justify-between">
-        {/* Logo alineado a la izquierda */}
-        <img 
-          src={logo} 
-          alt="Logo" 
-          className="w-24 p-2  sm:w-36 md:w-38 lg:w-46 xl:w-50 max-w-full ml-4" 
-        />
-        {/* Título centrado responsivamente */}
-        <h1 className="absolute ml-14 inset-0 flex items-center justify-center text-4xl sm:text-5xl lg:text-6xl font-bold text-center">
-          <a 
-            href="/feed" 
-            className="text-white hover:underline cursor-pointer"
-          >
-            NovaMarket
-          </a>
-        </h1>
-      </div>
+        <div className="bg-[#0070ff] py-5 text-white relative flex items-center justify-between rounded-b-lg">
+          <img 
+            src={logo} 
+            alt="Logo" 
+            className="w-24 p-2  sm:w-36 md:w-38 lg:w-46 xl:w-50 max-w-full ml-4" 
+          />
+          <h1 className="absolute ml-14 inset-0 flex items-center justify-center text-4xl sm:text-5xl lg:text-6xl font-bold text-center">
+            <a 
+              href="/feed" 
+              className="text-white hover:underline cursor-pointer"
+            >
+              NovaMarket
+            </a>
+          </h1>
+        </div>
         <IonToolbar>
-          <IonTitle className='text-center' >Perfil</IonTitle>
+          <IonTitle className="text-center">Perfil Usuario</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
-        <div style={{ textAlign: 'center', paddingTop: '20px' }}>
-          <IonAvatar style={{ margin: 'auto', width: '150px', height: '150px' }}>
-            <img src="https://via.placeholder.com/150" alt="profile" />
-          </IonAvatar>
-          <h2>Juan Carlos</h2>
-          <p>⭐⭐⭐⭐⭐</p>
-        </div>
+      <IonContent>
+        <IonGrid>
+          <IonRow className="ion-justify-content-center ion-padding">
+            <IonCol size="12" className="ion-text-center">
+              <IonAvatar style={{ margin: '0 auto', width: '120px', height: '120px' }}>
+                <img src={userInfo.profileImage} alt="Avatar del usuario" />
+              </IonAvatar>
 
-        <IonItem lines="none">
-          <IonIcon icon={mailOutline} slot="start" />
-          <IonInput value="Juancarlos18@gmail.com" readonly />
-        </IonItem>
-
-        <IonItem lines="none">
-          <IonIcon icon={locationOutline} slot="start" />
-          <IonInput value="Ciudad" readonly />
-        </IonItem>
-
-        <IonItem lines="none">
-          <IonIcon icon={chatbubbleEllipsesOutline} slot="start" />
-          <IonInput value="Envía un mensaje" readonly />
-        </IonItem>
-
-        <IonButton  expand="full" color="primary" style={{ marginTop: '20px' }}>
-          Enviar un mensaje
-        </IonButton>
-        <IonButton onClick={() => history.goBack()} className="mx-auto block w-1/2 text-center bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Regresar</IonButton>
+              <h2 className="mt-16">{userInfo.name}</h2>
+            </IonCol>
+          </IonRow>
+          <IonRow className="ion-padding">
+            <IonCol size="12" className="ion-text-left">
+              <IonGrid>
+                <IonRow className="ion-align-items-center ion-padding-vertical">
+                  <IonCol size="auto">
+                    <IonIcon icon={locationOutline} size="large" />
+                  </IonCol>
+                  <IonCol>
+                    <h2 className="ion-no-margin">{userInfo.direccion}</h2>
+                  </IonCol>
+                </IonRow>
+                <IonRow className="ion-align-items-center ion-padding-vertical">
+                  <IonCol size="auto">
+                    <IonIcon icon={callOutline} size="large" />
+                  </IonCol>
+                  <IonCol>
+                    <h2 className="ion-no-margin">{userInfo.telefono}</h2>
+                  </IonCol>
+                </IonRow>
+              </IonGrid>
+            </IonCol>
+          </IonRow>
+          <IonRow className="ion-justify-content-around ion-padding-top">
+            <IonCol size="auto">
+              <IonButton className="w-full text-white hover:bg-blue-700" onClick={() => window.history.back()}>
+                <IonIcon icon={arrowBackOutline} slot="start" />
+                Regresar
+              </IonButton>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
       </IonContent>
     </IonPage>
   );
-}; 
+};
 
 export default Perfil;
