@@ -11,6 +11,7 @@ import AddProduct from './components/AddProduct';
 import ParentComponent from './components/ComponentePadre';
 import Perfil from './components/Perfil';
 import PerfilSeguir from './components/PerfilSeguir';
+import Chat from './pages/Chat';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -48,8 +49,8 @@ const App = () => (
     <IonApp>
       <IonReactRouter>
         <IonRouterOutlet>
-          <Route exact path="/home">
-            <Home />
+          <Route exact path="/feed">
+            {/* <Home /> */}
           </Route>
           <Route exact path="/register">
             <Register />
@@ -60,17 +61,20 @@ const App = () => (
           <Route exact path="/">
             <Redirect to="/login" />
           </Route>
+          {/* <Route path="/chat" component={Chat} exact={true}/> */}
           <Route path="/feed" component={Feed} exact={true} />
           <Route path="/producto" component={DetalleProducto} exact={true} />
           <Route path="/perfil" component={Perfil} exact />
           <Route path="/perfil-seguir" component={PerfilSeguir} exact />
           {/* <Route exact path="/" render={() => <Redirect to="/perfil" />} /> */}
-          {/* <Route path="/chat" component={Chat}  exact={true}/> */} 
+          <Route path="/chat" render={(props) => <Chat {...props.location.state} />}/>
           <Route path="/agregar-producto" component={ParentComponent} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
   </AuthProvider>
 );
+
+
 
 export default App;
