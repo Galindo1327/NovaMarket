@@ -42,7 +42,7 @@ function Login() {
     return (
         <div className="w-screen h-screen flex justify-center items-center bg-[#0a0a0a]">
             <IonCard className="w-96 max-w-sm mx-min p-8 bg-[#1a1a1a] shadow-lg rounded-lg border border-gray-700">
-                <IonCardHeader className="text-center text-gray-100">
+                <IonCardHeader className="text-center flex flex-col text-gray-100">
                     <div className="flex justify-center mb-4">
                         <img
                             src={Logo}

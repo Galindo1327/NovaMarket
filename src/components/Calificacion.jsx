@@ -121,8 +121,7 @@ const Calificacion = ({ productoId, isDetail = false }) => {
 
       <IonButton
         onClick={toggleCommentsVisibility}
-        expand="full"
-        className="mt-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+        className="mt-4 w-full text-white hover:bg-blue-600"
       >
         {areCommentsVisible ? 'Ocultar comentarios' : `Mostrar comentarios (${totalComments})`}
       </IonButton>
@@ -160,13 +159,13 @@ const Calificacion = ({ productoId, isDetail = false }) => {
         />
         <IonInput
           placeholder="Escribe tu comentario aquí"
+          className='mt-2'
           value={comment}
           onIonInput={(e) => setComment(e.detail.value)}
         />
         <IonButton
           onClick={handleSubmit}
-          expand="full"
-          className="mt-4"
+          className="mt-4 w-full text-white hover:bg-blue-600"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Enviando...' : 'Enviar Calificación'}

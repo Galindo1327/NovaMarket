@@ -45,7 +45,7 @@ const Perfil = () => {
   return (
     <IonPage>
       <IonHeader>
-        <div className="bg-[#0070ff] py-5 text-white relative flex items-center justify-between">
+        <div className="bg-[#0070ff] py-5 text-white relative flex items-center justify-between rounded-b-lg">
           <img 
             src={logo} 
             alt="Logo" 
@@ -71,13 +71,8 @@ const Perfil = () => {
               <IonAvatar style={{ margin: '0 auto', width: '120px', height: '120px' }}>
                 <img src={userInfo.profileImage} alt="Avatar del usuario" />
               </IonAvatar>
-              <br />
-              <br />
-              <br />
-              <br />
 
-              <h2 className="mt-2">{userInfo.name}</h2>
-              <p>⭐⭐⭐⭐⭐</p>
+              <h2 className="mt-16">{userInfo.name}</h2>
             </IonCol>
           </IonRow>
           <IonRow className="ion-padding">
@@ -104,21 +99,9 @@ const Perfil = () => {
           </IonRow>
           <IonRow className="ion-justify-content-around ion-padding-top">
             <IonCol size="auto">
-              <IonButton color="primary">
-                <IonIcon icon={chatbubbleOutline} slot="start" />
-                Enviar mensaje
-              </IonButton>
-            </IonCol>
-            <IonCol size="auto">
-              <IonButton color="secondary" onClick={() => window.history.back()}>
+              <IonButton className="w-full text-white hover:bg-blue-700" onClick={() => window.history.back()}>
                 <IonIcon icon={arrowBackOutline} slot="start" />
                 Regresar
-              </IonButton>
-            </IonCol>
-            <IonCol size="auto">
-              <IonButton color="success">
-                <IonIcon icon={personAddOutline} slot="start" />
-                Seguir
               </IonButton>
             </IonCol>
           </IonRow>

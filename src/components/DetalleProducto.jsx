@@ -67,11 +67,11 @@ const DetalleProducto = () => {
 
   return (
     <IonPage>
-      <div className="bg-[#0070ff] py-5 text-white relative flex items-center justify-between">
+      <div className="bg-[#0070ff] py-5 text-white relative flex items-center justify-between rounded-b-lg">
         <img 
           src={logo} 
           alt="Logo" 
-          className="w-24 p-2  sm:w-36 md:w-38 lg:w-46 xl:w-50 max-w-full ml-4" 
+          className="w-20 p-2 sm:w-36 md:w-38 lg:w-46 xl:w-50 max-w-full ml-4" 
         />
         <h1 className="absolute ml-14 inset-0 flex items-center justify-center text-4xl sm:text-5xl lg:text-6xl font-bold text-center">
           <a 
@@ -104,7 +104,7 @@ const DetalleProducto = () => {
               {producto.detalles}
             </div>
             <IonLabel className="block mb-2 text-gray-600">Vendedor:</IonLabel>
-            <IonButton onClick={() => history.push('/perfil-seguir', { usuarioId: producto.usuarioID })} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">{producto.usuario}</IonButton>
+            <IonButton onClick={() => history.push('/perfil-seguir', { usuarioId: producto.usuarioID })} className="w-1/2 text-white hover:bg-blue-700">{producto.usuario}</IonButton>
             
           </IonCardContent>
 
@@ -115,11 +115,11 @@ const DetalleProducto = () => {
               onClick={() => {
                 history.goBack();
               }}
-              className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700"
+              className="w-1/2 text-white hover:bg-blue-700"
               >
               Regresar
             </IonButton>
-            <IonButton onClick={() => history.push('/chat', { productoId: producto.id })} className="w-1/2 bg-blue-800 text-white border border-blue-400 hover:bg-blue-700">Contactar</IonButton>
+            <IonButton onClick={() => history.push('/chat', { productoId: producto.id })} className="w-1/2 text-white hover:bg-blue-700">Contactar</IonButton>
           </div>
         </IonCard>
       </IonContent>
