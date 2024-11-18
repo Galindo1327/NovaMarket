@@ -21,12 +21,14 @@ const AddProduct = ({ onAddProduct }) => {
 
   const [uploading, setUploading] = useState(false);
   const [usuario, setUsuario] = useState("");
+  const [usuarioID, setUsuarioID] = useState("");
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       const user = auth.currentUser;
       if (user) {
         setUsuario(user.displayName);
+        setUsuarioID(user.uid);
       }
     };
 
@@ -58,7 +60,8 @@ const AddProduct = ({ onAddProduct }) => {
         detalles: product.detalles,
         estado: product.estado,
         img: imgUrl,
-        usuario: usuario, 
+        usuario: usuario,
+        usuarioID: usuarioID,
       };
   
       await addDoc(collection(db, 'DetalleProducto'), newProduct);
