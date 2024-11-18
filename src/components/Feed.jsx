@@ -60,18 +60,13 @@ const Feed = () => {
         const productosFirebase = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
-          // Mapea `categoria` a `tipo` para que el filtro funcione
-          tipo: doc.data().categoria || 'otros', // Usa 'otros' como predeterminado si no hay categoría
+          tipo: doc.data().categoria || 'otros',
         }));
         setFirebaseProductos(productosFirebase);
       } catch (error) {
         console.error('Error al obtener productos:', error);
       }
     };
-  
-
-  
-
     fetchProductos();
   }, []);
 
@@ -88,7 +83,6 @@ const Feed = () => {
 
   return (
     <IonPage>
-      {/* Barra de navegación */}
       <IonHeader>
         <IonToolbar className="h-20 flex items-center justify-between">
           <div className="bg-[#0070ff] flex items-center w-full justify-between px-4 rounded-b-lg shadow-md">
@@ -101,7 +95,6 @@ const Feed = () => {
                 +
               </IonButton>
 
-              {/* Botón para redirigir al perfil */}
               <IonButton shape="round" color="light" onClick={() => history.push('/perfil')}>
                 <IonIcon icon={personOutline} />
               </IonButton>
@@ -110,14 +103,11 @@ const Feed = () => {
         </IonToolbar>
       </IonHeader>
 
-      {/* Contenido del Feed */}
       <IonContent className="ion-padding bg-[#0070ff]">
 
-        {/* Overlay oscuro */}
         {showPopover && (
           <div className="fixed inset-0 bg-black bg-opacity-50 z-10"></div>
         )}
-        {/* Barra de búsqueda */}
         <div className="flex justify-center items-center mb-4 ">
           <IonInput
             placeholder="Busca tu producto"
@@ -129,12 +119,10 @@ const Feed = () => {
             <IonIcon icon={searchOutline} />
           </IonButton>
 
-          {/* Botón para mostrar el popover de filtros */}
           <IonButton shape="round" color="light" className="ml-2" style={{ marginTop: "10px" }} onClick={() => setShowPopover(true)}>
             <IonIcon icon={funnelOutline} />
           </IonButton>
 
-          {/* Popover con las opciones de filtrado */}
           <IonPopover isOpen={showPopover} onDidDismiss={() => setShowPopover(false)}  className="rounded-lg shadow-lg transform -translate-y-60">
             <IonList>
               <IonItem button onClick={() => { setFiltro(''); setShowPopover(false); }}>Todos</IonItem>
@@ -150,7 +138,6 @@ const Feed = () => {
           </IonPopover>
         </div>
 
-        {/* Mostrar el filtro activo */}
         {filtro && (
           <div className="flex items-center mb-4">
             <IonChip color="tertiary text-black">
@@ -160,7 +147,6 @@ const Feed = () => {
           </div>
         )}
 
-        {/* Grid de productos */}
         <IonGrid>
           <IonRow className="flex flex-wrap">
             {productosFiltrados.length > 0 ? (
@@ -184,7 +170,6 @@ const Feed = () => {
                         </IonCardSubtitle>
                       </IonCardHeader>
 
-                      {/* Mostrar solo las estrellas y el número de comentarios */}
                       <Calificacion productoId={producto.id} isDetail={false} className="drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.5)]"/>
 
                     </IonCard>

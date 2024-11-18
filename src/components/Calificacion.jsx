@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { IonButton, IonCard, IonCardHeader, IonCardTitle, IonInput } from '@ionic/react';
 import StarRatings from 'react-star-ratings';
-import { db } from '../credentials'; // Importar Firestore
-import { collection, addDoc, getDocs, query, where } from 'firebase/firestore'; // Métodos de Firestore
+import { db } from '../credentials';
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
 
 const Calificacion = ({ productoId, isDetail = false }) => {
   // Estados para rating y comentarios
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [averageRating, setAverageRating] = useState(0); // Promedio de calificación
-  const [totalComments, setTotalComments] = useState(0); // Total de comentarios
-  const [isLoading, setIsLoading] = useState(true); // Estado para cargar datos
-  const [areCommentsVisible, setAreCommentsVisible] = useState(false); // Control de visibilidad de comentarios
-  const [reviews, setReviews] = useState([]); // Almacenar los comentarios obtenidos
+  const [averageRating, setAverageRating] = useState(0); 
+  const [totalComments, setTotalComments] = useState(0); 
+  const [isLoading, setIsLoading] = useState(true); 
+  const [areCommentsVisible, setAreCommentsVisible] = useState(false); 
+  const [reviews, setReviews] = useState([]); 
 
-  // Obtener todas las calificaciones de un producto
   const fetchRatings = async () => {
     try {
       const q = query(collection(db, 'calificaciones'), where('productoId', '==', productoId));
@@ -29,13 +28,13 @@ const Calificacion = ({ productoId, isDetail = false }) => {
         const data = doc.data();
         ratingSum += data.rating;
         totalRatings++;
-        fetchedReviews.push(data); // Agregar comentarios obtenidos
+        fetchedReviews.push(data); 
       });
 
       if (totalRatings > 0) {
         setAverageRating(ratingSum / totalRatings);
         setTotalComments(totalRatings);
-        setReviews(fetchedReviews); // Almacenar comentarios
+        setReviews(fetchedReviews); 
       }
     } catch (e) {
       console.error('Error fetching ratings: ', e);
@@ -44,12 +43,10 @@ const Calificacion = ({ productoId, isDetail = false }) => {
     }
   };
 
-  // Cargar calificaciones al montar el componente
   useEffect(() => {
     fetchRatings();
   }, [productoId]);
 
-  // Enviar una nueva calificación
   const handleSubmit = async () => {
     if (!productoId || rating === 0 || comment === '') {
       alert('Por favor completa la calificación y el comentario.');
@@ -68,10 +65,8 @@ const Calificacion = ({ productoId, isDetail = false }) => {
 
       console.log('Calificación guardada exitosamente');
 
-      // Reiniciar campos después de enviar
       setRating(0);
       setComment('');
-      // Refrescar las calificaciones
       fetchRatings();
     } catch (e) {
       console.error('Error al guardar la calificación: ', e);
@@ -80,12 +75,10 @@ const Calificacion = ({ productoId, isDetail = false }) => {
     }
   };
 
-  // Alternar visibilidad de comentarios
   const toggleCommentsVisibility = () => {
     setAreCommentsVisible(!areCommentsVisible);
   };
 
-  // Si estamos en el feed, solo mostramos estrellas y total de comentarios
   if (!isDetail) {
     return (
       <div className="text-center mt-2">
@@ -108,7 +101,6 @@ const Calificacion = ({ productoId, isDetail = false }) => {
     );
   }
 
-  // Si estamos en el detalle del producto, mostramos el formulario completo de calificación
   return (
     <IonCard className="p-6 mt-6">
       <IonCardHeader>
@@ -117,7 +109,6 @@ const Calificacion = ({ productoId, isDetail = false }) => {
         </IonCardTitle>
       </IonCardHeader>
 
-      {/* Mostrar promedio de calificación */}
       <div className="text-center mb-4">
         <StarRatings
           rating={averageRating}
@@ -128,16 +119,13 @@ const Calificacion = ({ productoId, isDetail = false }) => {
         />
       </div>
 
-      {/* Botón para mostrar/ocultar los comentarios */}
       <IonButton
         onClick={toggleCommentsVisibility}
-        expand="full"
-        className="mt-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+        className="mt-4 w-full text-white hover:bg-blue-600"
       >
         {areCommentsVisible ? 'Ocultar comentarios' : `Mostrar comentarios (${totalComments})`}
       </IonButton>
 
-      {/* Lista de comentarios desplegable */}
       {areCommentsVisible && (
         <div className="mt-4 space-y-4">
           {reviews.map((review, index) => (
@@ -158,7 +146,6 @@ const Calificacion = ({ productoId, isDetail = false }) => {
         </div>
       )}
 
-      {/* Sección para agregar rating y comentario */}
       <h2 className="text-2xl font-semibold text-orange-500 text-center mt-6 mb-4">Califica este producto</h2>
       <div className="mt-4">
         <StarRatings
@@ -172,13 +159,13 @@ const Calificacion = ({ productoId, isDetail = false }) => {
         />
         <IonInput
           placeholder="Escribe tu comentario aquí"
+          className='mt-2'
           value={comment}
           onIonInput={(e) => setComment(e.detail.value)}
         />
         <IonButton
           onClick={handleSubmit}
-          expand="full"
-          className="mt-4"
+          className="mt-4 w-full text-white hover:bg-blue-600"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Enviando...' : 'Enviar Calificación'}
