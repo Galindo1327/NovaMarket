@@ -128,12 +128,11 @@ const Feed = () => {
               <IonItem button onClick={() => { setFiltro(''); setShowPopover(false); }}>Todos</IonItem>
               <IonItem button onClick={() => { setFiltro('vehículo'); setShowPopover(false); }}>Vehículos</IonItem>
               <IonItem button onClick={() => { setFiltro('electrodoméstico'); setShowPopover(false); }}>Electrodomésticos</IonItem>
-              <IonItem button onClick={() => { setFiltro('comida'); setShowPopover(false); }}>Comida</IonItem>
+              <IonItem button onClick={() => { setFiltro('comida'); setShowPopover(false); }}>Comidas</IonItem>
               <IonItem button onClick={() => { setFiltro('tecnología'); setShowPopover(false); }}>Tecnología</IonItem>
               <IonItem button onClick={() => { setFiltro('jugueteria'); setShowPopover(false); }}>Juguetería</IonItem>
               <IonItem button onClick={() => { setFiltro('aseo'); setShowPopover(false); }}>Aseo</IonItem>
-              <IonItem button onClick={() => { setFiltro('comida'); setShowPopover(false); }}>Comida</IonItem>
-              <IonItem button onClick={() => { setFiltro('aseo personal'); setShowPopover(false); }}>Aseo Personal</IonItem>
+              <IonItem button onClick={() => { setFiltro('Cuidado Personal'); setShowPopover(false); }}>Cuidado Personal</IonItem>
             </IonList>
           </IonPopover>
         </div>

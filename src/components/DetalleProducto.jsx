@@ -111,14 +111,17 @@ const DetalleProducto = () => {
           <Calificacion productoId={producto.id} isDetail={true} />
 
           <div className="flex justify-around mb-5">
-            <IonButton
+            <IonButton 
+              expand="block" 
               onClick={() => {
-                history.goBack();
-              }}
+                history.replace('/feed'); // Navegar a Feed
+                window.location.reload(); // Recargar la página
+              }} 
               className="w-1/2 text-white hover:bg-blue-700"
-              >
+            >
               Regresar
             </IonButton>
+
             <IonButton onClick={() => history.push('/chat', { productoId: producto.id })} className="w-1/2 text-white hover:bg-blue-700">Contactar</IonButton>
           </div>
         </IonCard>
