@@ -17,8 +17,10 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../credentials';
 import logo from '../assets/logoNova.png';
 import { useLocation } from 'react-router-dom';
+import { useHistory } from "react-router-dom";
 
 const Perfil = () => {
+  const history = useHistory();
   const location = useLocation();
   const { usuarioId } = location.state || {};
   const [userInfo, setUserInfo] = useState(null);
@@ -41,6 +43,13 @@ const Perfil = () => {
   if (!userInfo) {
     return <div>Cargando perfil...</div>;
   }
+
+  const handleContact = () => {
+    history.push({
+      pathname: '/private-chat',
+      state: { recipientId: usuarioId, recipientName: userInfo.name }
+    });
+  };
 
   return (
     <IonPage>
@@ -95,6 +104,14 @@ const Perfil = () => {
                   </IonCol>
                 </IonRow>
               </IonGrid>
+            </IonCol>
+          </IonRow>
+          <IonRow className="ion-justify-content-around ion-padding-top">
+            <IonCol size="auto">
+              <IonButton className="w-full text-white hover:bg-blue-700" onClick={handleContact}>
+                <IonIcon icon={chatbubbleOutline} slot="start" />
+                Contactar
+              </IonButton>
             </IonCol>
           </IonRow>
           <IonRow className="ion-justify-content-around ion-padding-top">

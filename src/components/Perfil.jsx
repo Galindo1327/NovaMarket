@@ -116,6 +116,10 @@ const Perfil = () => {
     }
   };
 
+  const handleNotifications = () => {
+    history.push('/notifications');
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -199,6 +203,12 @@ const Perfil = () => {
               )}
             </IonItem>
           </IonList>
+
+          <IonRow className="ion-justify-content-center ion-padding">
+            <IonCol size="auto">
+              <IonButton onClick={handleNotifications}>Notificaciones</IonButton>
+            </IonCol>
+          </IonRow>
 
           <IonRow className="ion-justify-content-center ion-padding">
             <IonCol size="auto">
