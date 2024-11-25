@@ -7,7 +7,6 @@ import { getAuth } from "firebase/auth";
 
 
 const Calificacion = ({ productoId, isDetail = false }) => {
-  // Estados para rating y comentarios
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -58,21 +57,21 @@ const Calificacion = ({ productoId, isDetail = false }) => {
     setIsSubmitting(true);
   
     try {
-      const auth = getAuth(); // Obtén la autenticación de Firebase
-      const currentUser = auth.currentUser; // Usuario actual
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
   
       if (!currentUser) {
         alert('Debes estar autenticado para dejar un comentario.');
         return;
       }
   
-      const userName = currentUser.displayName || 'Anónimo'; // Obtén el nombre del usuario
+      const userName = currentUser.displayName || 'Anónimo';
   
       await addDoc(collection(db, 'calificaciones'), {
         productoId,
         rating,
         comment,
-        userName, // Guarda el nombre del usuario
+        userName,
         timestamp: new Date()
       });
   

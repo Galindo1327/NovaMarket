@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonIcon, IonHeader, IonToolbar, IonTitle, IonPopover, IonList, IonItem, IonChip, IonLabel } from '@ionic/react';
-import { searchOutline, funnelOutline, closeCircleOutline, personOutline } from 'ionicons/icons';  // Añadir icono de perfil
+import { searchOutline, funnelOutline, closeCircleOutline, personOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import Calificacion from './Calificacion';
 import { collection, getDocs, onSnapshot } from 'firebase/firestore';

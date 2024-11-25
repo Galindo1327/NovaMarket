@@ -23,7 +23,7 @@ const AddProduct = ({ onAddProduct }) => {
   const [usuario, setUsuario] = useState("");
   const [usuarioID, setUsuarioID] = useState("");
   const [imageSelected, setImageSelected] = useState(false);
-  const [successMessage, setSuccessMessage] = useState(false); // Maneja estado del mensaje de sbdia exitosa
+  const [successMessage, setSuccessMessage] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -65,12 +65,10 @@ const AddProduct = ({ onAddProduct }) => {
       setUploading(true);
 
       try {
-        // firestore
         const imgRef = ref(storage, `productos/${Date.now()}-${product.img.name}`);
         await uploadBytes(imgRef, product.img);
         const imgUrl = await getDownloadURL(imgRef);
 
-        // Crear nuevo producto
         const newProduct = {
           nombre: product.nombre,
           precio: product.precio,
@@ -82,7 +80,6 @@ const AddProduct = ({ onAddProduct }) => {
           usuarioID: usuarioID,
         };
 
-        // Agregar producto a Firestore
         await addDoc(collection(db, 'DetalleProducto'), newProduct);
 
         if (onAddProduct) {

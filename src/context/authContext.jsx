@@ -19,11 +19,7 @@ export function AuthProvider({ children }) {
             
             const response = await createUserWithEmailAndPassword(auth, email, password);
             const user = response.user;
-    
-          
             await updateProfile(user, { displayName: name });
-    
-           
             await setDoc(doc(db, "users", user.uid), {
                 name: name,   
                 email: email, 

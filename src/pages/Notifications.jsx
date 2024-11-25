@@ -17,18 +17,15 @@ const Notifications = () => {
       const unsubscribe = onSnapshot(q, async (querySnapshot) => {
         const contactsData = [];
 
-        // Crear un set para evitar contactos duplicados
         const uniqueContacts = new Set();
 
         for (const docSnapshot of querySnapshot.docs) {
           const data = docSnapshot.data();
           const contactId = data.users.find(id => id !== userId);
           
-          // Evitar duplicados en la lista de contactos
           if (contactId && !uniqueContacts.has(contactId)) {
             uniqueContacts.add(contactId);
 
-            // Obtener displayName de cada contactId
             const contactDoc = await getDoc(doc(db, 'users', contactId));
             const contactName = contactDoc.exists() ? contactDoc.data().name : 'Usuario desconocido';
 
