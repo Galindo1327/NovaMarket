@@ -27,18 +27,17 @@ const Perfil = () => {
   const [editing, setEditing] = useState(false);
   const [userData, setUserData] = useState({
     name: "",
-    direccion: "",
-    telefono: "",
+    direccion: "", // Campo para la ciudad
+    telefono: "",  // Campo para el teléfono
   });
 
   const [profileImage, setProfileImage] = useState(
     "https://via.placeholder.com/150"
   );
-  const [newProfileImage, setNewProfileImage] = useState(null); 
+  const [newProfileImage, setNewProfileImage] = useState(null);
 
   const auth = getAuth();
   const userId = auth.currentUser?.uid;
-
 
   const fetchUserData = async () => {
     if (!userId) {
@@ -50,9 +49,15 @@ const Perfil = () => {
       const docSnap = await getDoc(userDocRef);
 
       if (docSnap.exists()) {
-        setUserData(docSnap.data());
-        if (docSnap.data().profileImage) {
-          setProfileImage(docSnap.data().profileImage);
+        const data = docSnap.data();
+        setUserData({
+          name: data.name || "",
+          direccion: data.city || "", // Carga la ciudad
+          telefono: data.phone || "",  // Carga el teléfono
+        });
+
+        if (data.profileImage) {
+          setProfileImage(data.profileImage);
         }
       } else {
         console.log("No se encontró el documento del usuario");
@@ -64,7 +69,6 @@ const Perfil = () => {
 
   useEffect(() => {
     fetchUserData();
-    
   }, []);
 
   const handleInputChange = (e) => {
@@ -89,9 +93,8 @@ const Perfil = () => {
       await uploadBytes(imageRef, newProfileImage);
 
       const downloadURL = await getDownloadURL(imageRef);
-      setProfileImage(downloadURL); 
+      setProfileImage(downloadURL);
 
-      
       const userRef = doc(db, "users", userId);
       await setDoc(userRef, { profileImage: downloadURL }, { merge: true });
       console.log("Imagen de perfil actualizada.");
@@ -102,19 +105,28 @@ const Perfil = () => {
 
   const saveChanges = async () => {
     try {
-      const userRef = doc(db, "users", userId);
-      await setDoc(userRef, userData, { merge: true });
+        const userRef = doc(db, "users", userId);
+        
+        // Mapear los datos del estado a los nombres correctos en Firestore
+        const updatedData = {
+            name: userData.name,
+            city: userData.direccion, // Mapear "direccion" a "city"
+            phone: userData.telefono, // Mapear "telefono" a "phone"
+        };
 
-      setEditing(false);
-      console.log("Cambios guardados:", userData);
+        await setDoc(userRef, updatedData, { merge: true });
+
+        setEditing(false);
+        console.log("Cambios guardados:", updatedData);
     } catch (error) {
-      console.error("Error guardando los cambios: ", error);
+        console.error("Error guardando los cambios: ", error);
     }
 
     if (newProfileImage) {
-      await uploadImage(); 
+        await uploadImage();
     }
-  };
+};
+
 
   return (
     <IonPage>
@@ -172,7 +184,6 @@ const Perfil = () => {
               )}
             </IonItem>
 
-            
             <IonItem>
               <IonLabel position="stacked">Ciudad</IonLabel>
               {editing ? (
