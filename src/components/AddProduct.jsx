@@ -180,7 +180,7 @@ const AddProduct = ({ onAddProduct }) => {
                 <IonSelectOption value="electrodoméstico">Electrodoméstico</IonSelectOption>
                 <IonSelectOption value="comida">Comida</IonSelectOption>
                 <IonSelectOption value="tecnología">Tecnología</IonSelectOption>
-                <IonSelectOption value="Aseo">Aseo</IonSelectOption>
+                <IonSelectOption value="aseo">Aseo</IonSelectOption>
                 <IonSelectOption value="jugueteria">Juguetería</IonSelectOption>
                 <IonSelectOption value="Cuidado Personal">Cuidado Personal</IonSelectOption>
               </IonSelect>
