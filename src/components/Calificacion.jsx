@@ -3,6 +3,8 @@ import { IonButton, IonCard, IonCardHeader, IonCardTitle, IonInput } from '@ioni
 import StarRatings from 'react-star-ratings';
 import { db } from '../credentials';
 import { collection, addDoc, getDocs, query, where } from 'firebase/firestore';
+import { getAuth } from "firebase/auth";
+
 
 const Calificacion = ({ productoId, isDetail = false }) => {
   // Estados para rating y comentarios
@@ -52,19 +54,30 @@ const Calificacion = ({ productoId, isDetail = false }) => {
       alert('Por favor completa la calificación y el comentario.');
       return;
     }
-
+  
     setIsSubmitting(true);
-
+  
     try {
+      const auth = getAuth(); // Obtén la autenticación de Firebase
+      const currentUser = auth.currentUser; // Usuario actual
+  
+      if (!currentUser) {
+        alert('Debes estar autenticado para dejar un comentario.');
+        return;
+      }
+  
+      const userName = currentUser.displayName || 'Anónimo'; // Obtén el nombre del usuario
+  
       await addDoc(collection(db, 'calificaciones'), {
         productoId,
         rating,
         comment,
+        userName, // Guarda el nombre del usuario
         timestamp: new Date()
       });
-
+  
       console.log('Calificación guardada exitosamente');
-
+  
       setRating(0);
       setComment('');
       fetchRatings();
@@ -74,6 +87,7 @@ const Calificacion = ({ productoId, isDetail = false }) => {
       setIsSubmitting(false);
     }
   };
+  
 
   const toggleCommentsVisibility = () => {
     setAreCommentsVisible(!areCommentsVisible);
@@ -139,10 +153,11 @@ const Calificacion = ({ productoId, isDetail = false }) => {
                 starSpacing="3px"
               />
               <p className="mt-2 text-gray-700">
-                <strong>Comentario:</strong> {review.comment}
+                <strong>{review.userName}:</strong> {review.comment}
               </p>
             </div>
           ))}
+
         </div>
       )}
 
