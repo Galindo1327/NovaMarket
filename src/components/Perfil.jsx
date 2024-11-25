@@ -215,7 +215,7 @@ const Perfil = () => {
 
           <IonRow className="ion-justify-content-center ion-padding">
             <IonCol size="auto">
-              <IonButton onClick={handleNotifications}>Notificaciones</IonButton>
+              <IonButton onClick={handleNotifications}>Ver Chats</IonButton>
             </IonCol>
           </IonRow>
 
