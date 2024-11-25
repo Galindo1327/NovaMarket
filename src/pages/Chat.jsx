@@ -58,7 +58,7 @@ function Chat({ productoId }) {
             </svg>
             </IonButton>
           </div>
-            <h1 className="text-white font-bold text-3xl w-full">Chat</h1>
+            <h1 className="text-white font-bold text-3xl w-full">Chat Producto</h1>
         </div>
       </IonHeader>
 
