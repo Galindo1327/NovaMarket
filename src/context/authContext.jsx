@@ -14,24 +14,26 @@ export const useAuth = () => {
 };
 
 export function AuthProvider({ children }) {
-    const register = async (email, password, name) => {
+    const register = async (email, password, name, phone, city) => {
         try {
+            
             const response = await createUserWithEmailAndPassword(auth, email, password);
             const user = response.user;
-
             await updateProfile(user, { displayName: name });
-
             await setDoc(doc(db, "users", user.uid), {
-                name: name,
-                email: email,
+                name: name,   
+                email: email, 
+                phone: phone, 
+                city: city,   
             });
-
+    
             console.log("Usuario registrado y datos guardados en Firestore:", user.uid);
         } catch (error) {
             console.error("Error al registrar usuario:", error);
-            throw error;
+            throw error; 
         }
     };
+    
 
     const login = async (email, password) => {
         try {

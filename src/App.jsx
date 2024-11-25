@@ -12,6 +12,8 @@ import ParentComponent from './components/ComponentePadre';
 import Perfil from './components/Perfil';
 import PerfilSeguir from './components/PerfilSeguir';
 import Chat from './pages/Chat';
+import PrivateChat from './pages/PrivateChat';
+import Notifications from './pages/Notifications';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -69,6 +71,8 @@ const App = () => (
           {/* <Route exact path="/" render={() => <Redirect to="/perfil" />} /> */}
           <Route path="/chat" render={(props) => <Chat {...props.location.state} />}/>
           <Route path="/agregar-producto" component={ParentComponent} />
+          <Route path="/private-chat" component={PrivateChat} />
+          <Route path="/notifications" component={Notifications} />
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>

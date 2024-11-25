@@ -34,11 +34,10 @@ const Perfil = () => {
   const [profileImage, setProfileImage] = useState(
     "https://via.placeholder.com/150"
   );
-  const [newProfileImage, setNewProfileImage] = useState(null); 
+  const [newProfileImage, setNewProfileImage] = useState(null);
 
   const auth = getAuth();
   const userId = auth.currentUser?.uid;
-
 
   const fetchUserData = async () => {
     if (!userId) {
@@ -50,9 +49,15 @@ const Perfil = () => {
       const docSnap = await getDoc(userDocRef);
 
       if (docSnap.exists()) {
-        setUserData(docSnap.data());
-        if (docSnap.data().profileImage) {
-          setProfileImage(docSnap.data().profileImage);
+        const data = docSnap.data();
+        setUserData({
+          name: data.name || "",
+          direccion: data.city || "",
+          telefono: data.phone || "",
+        });
+
+        if (data.profileImage) {
+          setProfileImage(data.profileImage);
         }
       } else {
         console.log("No se encontró el documento del usuario");
@@ -64,7 +69,6 @@ const Perfil = () => {
 
   useEffect(() => {
     fetchUserData();
-    
   }, []);
 
   const handleInputChange = (e) => {
@@ -89,9 +93,8 @@ const Perfil = () => {
       await uploadBytes(imageRef, newProfileImage);
 
       const downloadURL = await getDownloadURL(imageRef);
-      setProfileImage(downloadURL); 
+      setProfileImage(downloadURL);
 
-      
       const userRef = doc(db, "users", userId);
       await setDoc(userRef, { profileImage: downloadURL }, { merge: true });
       console.log("Imagen de perfil actualizada.");
@@ -102,18 +105,29 @@ const Perfil = () => {
 
   const saveChanges = async () => {
     try {
-      const userRef = doc(db, "users", userId);
-      await setDoc(userRef, userData, { merge: true });
+        const userRef = doc(db, "users", userId);
+        const updatedData = {
+            name: userData.name,
+            city: userData.direccion,
+            phone: userData.telefono,
+        };
 
-      setEditing(false);
-      console.log("Cambios guardados:", userData);
+        await setDoc(userRef, updatedData, { merge: true });
+
+        setEditing(false);
+        console.log("Cambios guardados:", updatedData);
     } catch (error) {
-      console.error("Error guardando los cambios: ", error);
+        console.error("Error guardando los cambios: ", error);
     }
 
     if (newProfileImage) {
-      await uploadImage(); 
+        await uploadImage();
     }
+};
+
+
+  const handleNotifications = () => {
+    history.push('/notifications');
   };
 
   return (
@@ -172,7 +186,6 @@ const Perfil = () => {
               )}
             </IonItem>
 
-            
             <IonItem>
               <IonLabel position="stacked">Ciudad</IonLabel>
               {editing ? (
@@ -199,6 +212,12 @@ const Perfil = () => {
               )}
             </IonItem>
           </IonList>
+
+          <IonRow className="ion-justify-content-center ion-padding">
+            <IonCol size="auto">
+              <IonButton onClick={handleNotifications}>Ver Chats</IonButton>
+            </IonCol>
+          </IonRow>
 
           <IonRow className="ion-justify-content-center ion-padding">
             <IonCol size="auto">
