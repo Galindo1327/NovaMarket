@@ -1,27 +1,36 @@
-import React, { useState, useEffect } from "react";
-import { IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonContent, IonInput, IonButton, IonList, IonItem, IonLabel, IonPage, IonHeader, IonToolbar, IonFooter } from '@ionic/react';
+import React, { useState, useEffect } from 'react';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonInput, IonButton, IonList, IonItem, IonLabel, IonFooter } from '@ionic/react';
 import { collection, addDoc, query, onSnapshot, orderBy, where } from 'firebase/firestore';
 import { db, auth } from '../credentials';
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from 'react-router-dom';
 
-function Chat({ productoId }) {
+const PrivateChat = () => {
+  const location = useLocation();
   const history = useHistory();
+  const { recipientId, recipientName } = location.state || {};
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [userName, setUserName] = useState("");
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       const user = auth.currentUser;
       if (user) {
         setUserName(user.displayName);
+        setUserId(user.uid);
       }
     };
 
     fetchUserInfo();
 
-    if (productoId) {
-      const q = query(collection(db, 'Mensajes'), where('productoId', '==', productoId), orderBy('timestamp', 'asc'));
+    if (recipientId && userId) {
+      const chatId = [userId, recipientId].sort().join('_');
+      const q = query(
+        collection(db, 'MensajesPrivados'),
+        where('chatId', '==', chatId),
+        orderBy('timestamp', 'asc')
+      );
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const msgs = querySnapshot.docs.map(doc => doc.data());
         setMessages(msgs);
@@ -29,18 +38,18 @@ function Chat({ productoId }) {
 
       return () => unsubscribe();
     }
-  }, [productoId]);
+  }, [recipientId, userId]);
 
-  const handleSendMessage = async () => {
+  const sendMessage = async () => {
     if (newMessage.trim() === "") return;
 
-    const user = auth.currentUser;
-    const displayName = user ? user.displayName : "Anónimo";
+    const chatId = [userId, recipientId].sort().join('_');
 
-    await addDoc(collection(db, 'Mensajes'), {
+    await addDoc(collection(db, 'MensajesPrivados'), {
       msg: newMessage,
-      name: displayName,
-      productoId: productoId,
+      name: userName,
+      chatId: chatId,
+      users: [userId, recipientId],
       timestamp: new Date()
     });
 
@@ -58,10 +67,9 @@ function Chat({ productoId }) {
             </svg>
             </IonButton>
           </div>
-            <h1 className="text-white font-bold text-3xl w-full">Chat Producto</h1>
+            <h1 className="text-white font-bold text-3xl w-full">Chat con {recipientName}</h1>
         </div>
       </IonHeader>
-
       <IonContent>
         <IonList>
           {messages.map((message, index) => (
@@ -74,7 +82,6 @@ function Chat({ productoId }) {
           ))}
         </IonList>
       </IonContent>
-
       <IonFooter>
         <div className="flex items-center p-4 border border-t-slate-300">
           <IonInput
@@ -83,7 +90,7 @@ function Chat({ productoId }) {
             onIonChange={(e) => setNewMessage(e.detail.value)}
             className="flex-1"
           />
-          <IonButton onClick={handleSendMessage} className="ml-2">
+          <IonButton onClick={sendMessage} className="ml-2">
             <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m12 18-7 3 7-18 7 18-7-3Zm0 0v-5"/>
             </svg>
@@ -92,6 +99,6 @@ function Chat({ productoId }) {
       </IonFooter>
     </IonPage>
   );
-}
+};
 
-export default Chat;
+export default PrivateChat;

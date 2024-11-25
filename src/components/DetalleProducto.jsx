@@ -114,15 +114,15 @@ const DetalleProducto = () => {
             <IonButton 
               expand="block" 
               onClick={() => {
-                history.replace('/feed'); // Navegar a Feed
-                window.location.reload(); // Recargar la página
+                history.replace('/feed');
+                window.location.reload();
               }} 
               className="w-1/2 text-white hover:bg-blue-700"
             >
               Regresar
             </IonButton>
 
-            <IonButton onClick={() => history.push('/chat', { productoId: producto.id })} className="w-1/2 text-white hover:bg-blue-700">Contactar</IonButton>
+            <IonButton onClick={() => history.push('/chat', { productoId: producto.id })} className="w-1/2 text-white hover:bg-blue-700">Chat Producto</IonButton>
           </div>
         </IonCard>
       </IonContent>

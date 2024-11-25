@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { IonCard, IonCardHeader, IonCardSubtitle, IonCardTitle, IonContent, IonPage, IonInput, IonButton, IonGrid, IonRow, IonCol, IonIcon, IonHeader, IonToolbar, IonTitle, IonPopover, IonList, IonItem, IonChip, IonLabel } from '@ionic/react';
-import { searchOutline, funnelOutline, closeCircleOutline, personOutline } from 'ionicons/icons';  // Añadir icono de perfil
+import { searchOutline, funnelOutline, closeCircleOutline, personOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import Calificacion from './Calificacion';
 import { collection, getDocs, onSnapshot } from 'firebase/firestore';
@@ -177,7 +177,7 @@ const Feed = () => {
               )
             ) : (
               <div className="flex justify-center items-center h-40">
-                <p className="text-gray-500 text-lg">No se encontraron productos con tu búsqueda o filtro</p>
+                <p className="text-gray-500 text-lg">Cargando</p>
               </div>
             )}
           </IonRow>

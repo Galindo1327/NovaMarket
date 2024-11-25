@@ -28,7 +28,6 @@ function Register() {
     const handleRegister = async (e) => {
         e.preventDefault();
     
-        // Validación del nombre
         const namePattern = /^[A-Za-z\s]+$/;
         if (!namePattern.test(nameRegister)) {
             setNameError(true);
@@ -36,7 +35,6 @@ function Register() {
         }
         setNameError(false);
     
-        // Validación del correo
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!emailPattern.test(emailRegister)) {
             setEmailError(true);
@@ -44,7 +42,6 @@ function Register() {
         }
         setEmailError(false);
     
-        // Validación de la contraseña
         const passwordPattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
         if (!passwordPattern.test(passwordRegister)) {
             setPasswordError(true);
@@ -52,15 +49,13 @@ function Register() {
         }
         setPasswordError(false);
     
-        // Validación del teléfono
-        const phonePattern = /^[0-9]{10}$/; // Acepta números de 10 dígitos
+        const phonePattern = /^[0-9]{10}$/;
         if (!phonePattern.test(phoneRegister)) {
             setPhoneError(true);
             return;
         }
         setPhoneError(false);
     
-        // Validación de la ciudad
         if (!cityRegister.trim()) {
             setCityError(true);
             return;
@@ -68,7 +63,6 @@ function Register() {
         setCityError(false);
     
         try {
-           
             await auth.register(emailRegister, passwordRegister, nameRegister, phoneRegister, cityRegister);
             history.push('/login');
         } catch (error) {

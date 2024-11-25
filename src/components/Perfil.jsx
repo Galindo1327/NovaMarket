@@ -27,8 +27,8 @@ const Perfil = () => {
   const [editing, setEditing] = useState(false);
   const [userData, setUserData] = useState({
     name: "",
-    direccion: "", // Campo para la ciudad
-    telefono: "",  // Campo para el teléfono
+    direccion: "",
+    telefono: "",
   });
 
   const [profileImage, setProfileImage] = useState(
@@ -52,8 +52,8 @@ const Perfil = () => {
         const data = docSnap.data();
         setUserData({
           name: data.name || "",
-          direccion: data.city || "", // Carga la ciudad
-          telefono: data.phone || "",  // Carga el teléfono
+          direccion: data.city || "",
+          telefono: data.phone || "",
         });
 
         if (data.profileImage) {
@@ -106,12 +106,10 @@ const Perfil = () => {
   const saveChanges = async () => {
     try {
         const userRef = doc(db, "users", userId);
-        
-        // Mapear los datos del estado a los nombres correctos en Firestore
         const updatedData = {
             name: userData.name,
-            city: userData.direccion, // Mapear "direccion" a "city"
-            phone: userData.telefono, // Mapear "telefono" a "phone"
+            city: userData.direccion,
+            phone: userData.telefono,
         };
 
         await setDoc(userRef, updatedData, { merge: true });
@@ -127,6 +125,10 @@ const Perfil = () => {
     }
 };
 
+
+  const handleNotifications = () => {
+    history.push('/notifications');
+  };
 
   return (
     <IonPage>
@@ -210,6 +212,12 @@ const Perfil = () => {
               )}
             </IonItem>
           </IonList>
+
+          <IonRow className="ion-justify-content-center ion-padding">
+            <IonCol size="auto">
+              <IonButton onClick={handleNotifications}>Ver Chats</IonButton>
+            </IonCol>
+          </IonRow>
 
           <IonRow className="ion-justify-content-center ion-padding">
             <IonCol size="auto">
